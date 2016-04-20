@@ -5,4 +5,4 @@ local.properties
 build
 captures
 *.class
-*.iml
+ApiKey.java
