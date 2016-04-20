@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">DiscoveryTime</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Tab names for trip lists -->
+    <string name="upcoming">Upcoming</string>
+    <string name="wish_list">Wish list</string>
+    <string name="past">Past</string>
 </resources>

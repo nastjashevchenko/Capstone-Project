@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime;
+package com.nanodegree.shevchenko.discoverytime.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.nanodegree.shevchenko.discoverytime.R;
+import com.nanodegree.shevchenko.discoverytime.adapters.TripListPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
+        viewPager.setAdapter(new TripListPagerAdapter(getSupportFragmentManager(),
                 MainActivity.this));
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
