@@ -1,10 +1,13 @@
 package com.nanodegree.shevchenko.discoverytime.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Trip {
+public class Trip implements Parcelable {
     private String mTitle;
     private String mStartDate;
     private String mEndDate;
@@ -57,4 +60,34 @@ public class Trip {
         wishlist.add(new Trip("Tokyo"));
         return wishlist;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mTitle);
+        dest.writeString(this.mStartDate);
+        dest.writeString(this.mEndDate);
+    }
+
+    protected Trip(Parcel in) {
+        this.mTitle = in.readString();
+        this.mStartDate = in.readString();
+        this.mEndDate = in.readString();
+    }
+
+    public static final Parcelable.Creator<Trip> CREATOR = new Parcelable.Creator<Trip>() {
+        @Override
+        public Trip createFromParcel(Parcel source) {
+            return new Trip(source);
+        }
+
+        @Override
+        public Trip[] newArray(int size) {
+            return new Trip[size];
+        }
+    };
 }
