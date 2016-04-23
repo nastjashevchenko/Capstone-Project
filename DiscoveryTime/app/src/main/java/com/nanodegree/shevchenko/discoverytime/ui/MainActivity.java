@@ -1,5 +1,6 @@
 package com.nanodegree.shevchenko.discoverytime.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -85,5 +87,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(LOG_TAG, connectionResult.getErrorMessage());
+    }
+
+    public void openAddActivity(View view) {
+        Intent addActivity = new Intent(this, AddTripActivity.class);
+        startActivity(addActivity);
     }
 }
