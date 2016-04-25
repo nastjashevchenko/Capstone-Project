@@ -9,6 +9,16 @@ import java.util.List;
 
 public class Trip implements Parcelable {
     private String mId;
+
+    public String getDefaultTitle() {
+        return mDefaultTitle;
+    }
+
+    public void setDefaultTitle(String defaultTitle) {
+        this.mDefaultTitle = defaultTitle;
+    }
+
+    private String mDefaultTitle;
     private String mTitle;
     private String mStartDate;
     private String mEndDate;
@@ -104,4 +114,8 @@ public class Trip implements Parcelable {
             return new Trip[size];
         }
     };
+
+    public void setId(String id) {
+        this.mId = id;
+    }
 }

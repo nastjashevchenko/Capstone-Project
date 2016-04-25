@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -26,6 +27,7 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
     private EditText mTitle;
     private EditText mStartDate;
     private EditText mEndDate;
+    private Button mSave;
 
     private boolean start;
 
@@ -43,10 +45,10 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                mTrip = new Trip(place.getId());
-                mTrip.setTitle(place.getName().toString());
-                mTitle.setText(mTrip.getTitle());
-                Log.d(LOG_TAG, "Place ID: " + mTrip.getId());
+                mTrip.setId(place.getId());
+                String placeName = place.getName().toString();
+                mTrip.setDefaultTitle(placeName);
+                if (mTitle.getText().length() <= 0) mTitle.setText(placeName);
             }
 
             @Override
@@ -83,6 +85,7 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        // TODO string format
         StringBuilder dateString = new StringBuilder()
                 .append(dayOfMonth).append("/")
                 .append(monthOfYear + 1).append("/")
