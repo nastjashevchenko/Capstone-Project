@@ -5,41 +5,29 @@
     android:padding="@dimen/activity_horizontal_margin"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:text="@string/destination"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/destination"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="text" />
-    </LinearLayout>
-
-    <LinearLayout
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/title"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="text"/>
-    </LinearLayout>
+    <EditText
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,9 +41,12 @@
             android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         <EditText
+            android:id="@+id/start_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="showDatePickerDialog"
+            android:focusable="false"
             android:inputType="date"/>
     </LinearLayout>
 
@@ -71,9 +62,12 @@
             android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         <EditText
+            android:id="@+id/end_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:focusable="false"
+            android:onClick="showDatePickerDialog"
             android:inputType="date"/>
     </LinearLayout>
 
@@ -87,7 +81,7 @@
             android:layout_weight="1"
             android:layout_margin="16dp"
             style="?android:attr/buttonBarButtonStyle"
-            android:text="@string/ok_button"/>
+            android:text="@string/save_button"/>
 
         <Button
             android:layout_width="0dp"

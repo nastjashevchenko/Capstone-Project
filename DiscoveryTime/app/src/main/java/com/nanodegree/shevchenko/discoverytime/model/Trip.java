@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Trip implements Parcelable {
+    private String mId;
     private String mTitle;
     private String mStartDate;
     private String mEndDate;
 
-    public Trip(String title) {
-        this.mTitle = title;
+    public Trip() {};
+
+    public Trip(String id) {
+        this.mId = id;
     }
 
     public Trip(String title, String startDate, String endDate) {
@@ -22,13 +25,24 @@ public class Trip implements Parcelable {
         this.mEndDate = endDate;
     }
 
-    public void setDates(String startDate, String endDate) {
+    public void setTitle(String title) {
+        this.mTitle = title;
+    }
+
+    public void setDateStart(String startDate) {
         this.mStartDate = startDate;
+    }
+
+    public void setDateEnd(String endDate) {
         this.mEndDate = endDate;
     }
 
     public String getTitle() {
         return mTitle;
+    }
+
+    public String getId() {
+        return mId;
     }
 
     public String getDates() {
