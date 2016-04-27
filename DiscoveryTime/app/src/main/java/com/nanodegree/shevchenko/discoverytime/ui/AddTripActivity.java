@@ -24,6 +24,7 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
     private static final String LOG_TAG = AddTripActivity.class.getName();
     private Trip mTrip = new Trip();
 
+    private PlaceAutocompleteFragment mAutocomplete;
     private EditText mTitle;
     private EditText mStartDate;
     private EditText mEndDate;
@@ -36,13 +37,15 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
 
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        mAutocomplete = (PlaceAutocompleteFragment) getFragmentManager()
+                .findFragmentById(R.id.place_autocomplete_fragment);
         mTitle = (EditText) findViewById(R.id.title);
         mStartDate = (EditText) findViewById(R.id.start_date);
         mEndDate = (EditText) findViewById(R.id.end_date);
 
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        mAutocomplete.setHint(getResources().getString(R.string.destination));
+        // TODO if place was deleted and new was not selected
+        mAutocomplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 mTrip.setId(place.getId());
@@ -85,11 +88,8 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        // TODO string format
-        StringBuilder dateString = new StringBuilder()
-                .append(dayOfMonth).append("/")
-                .append(monthOfYear + 1).append("/")
-                .append(year).append(" ");
+        String dateString = getResources().getString(R.string.date_template,
+                dayOfMonth, monthOfYear + 1, year);
         if (start) {
             mStartDate.setText(dateString);
             // TODO start and end date should be in date format, not strings like now

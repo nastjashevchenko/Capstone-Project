@@ -25,8 +25,8 @@ public class Trip implements Parcelable {
 
     public Trip() {};
 
-    public Trip(String id) {
-        this.mId = id;
+    public Trip(String title) {
+        this.mTitle = title;
     }
 
     public Trip(String title, String startDate, String endDate) {
