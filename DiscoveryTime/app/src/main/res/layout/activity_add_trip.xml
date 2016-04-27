@@ -74,7 +74,8 @@
             android:layout_weight="1"
             android:layout_margin="16dp"
             style="?android:attr/buttonBarButtonStyle"
-            android:text="@string/save_button"/>
+            android:text="@string/save_button"
+            android:onClick="saveAndExit"/>
 
         <Button
             android:layout_width="0dp"
@@ -82,6 +83,7 @@
             android:layout_weight="1"
             android:layout_margin="16dp"
             style="?android:attr/buttonBarButtonStyle"
+            android:onClick="exit"
             android:text="@string/cancel_button"/>
     </LinearLayout>
 </LinearLayout>

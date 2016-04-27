@@ -14,7 +14,12 @@
     <string name="start_date">Select start date</string>
     <string name="from">From</string>
     <string name="to">To</string>
-    <string name="title">Title</string>
+    <string name="title">Set title</string>
     <string name="destination">Destination</string>
     <string name="clear">Clear</string>
+
+    <!-- User error messages -->
+    <string name="destination_empty">Destination is not set</string>
+    <string name="one_date_set">Both or no dates must be selected</string>
+    <string name="start_after_end">Start date can\'t be later then end date</string>
 </resources>

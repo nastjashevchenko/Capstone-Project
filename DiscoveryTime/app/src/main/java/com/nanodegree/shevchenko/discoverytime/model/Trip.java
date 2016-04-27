@@ -4,11 +4,10 @@ package com.nanodegree.shevchenko.discoverytime.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.text.SimpleDateFormat;
+import com.nanodegree.shevchenko.discoverytime.Util;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class Trip implements Parcelable {
     private String mId;
@@ -67,16 +66,11 @@ public class Trip implements Parcelable {
     }
 
     public String getStartDateStr() {
-        return dateInMillisToString(mStartDate);
+        return Util.longDateToString(mStartDate);
     }
 
     public String getEndDateStr() {
-        return dateInMillisToString(mEndDate);
-    }
-
-    private String dateInMillisToString(long dateInMillis) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
-        return dateFormat.format(new Date(dateInMillis));
+        return Util.longDateToString(mEndDate);
     }
 
     public String getDates() {
