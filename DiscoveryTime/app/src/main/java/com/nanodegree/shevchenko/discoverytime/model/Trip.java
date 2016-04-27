@@ -4,8 +4,11 @@ package com.nanodegree.shevchenko.discoverytime.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Trip implements Parcelable {
     private String mId;
@@ -20,8 +23,8 @@ public class Trip implements Parcelable {
 
     private String mDefaultTitle;
     private String mTitle;
-    private String mStartDate;
-    private String mEndDate;
+    private long mStartDate;
+    private long mEndDate;
 
     public Trip() {};
 
@@ -29,7 +32,7 @@ public class Trip implements Parcelable {
         this.mTitle = title;
     }
 
-    public Trip(String title, String startDate, String endDate) {
+    public Trip(String title, long startDate, long endDate) {
         this.mTitle = title;
         this.mStartDate = startDate;
         this.mEndDate = endDate;
@@ -39,11 +42,11 @@ public class Trip implements Parcelable {
         this.mTitle = title;
     }
 
-    public void setDateStart(String startDate) {
+    public void setStartDate(long startDate) {
         this.mStartDate = startDate;
     }
 
-    public void setDateEnd(String endDate) {
+    public void setEndDate(long endDate) {
         this.mEndDate = endDate;
     }
 
@@ -55,23 +58,45 @@ public class Trip implements Parcelable {
         return mId;
     }
 
+    public long getStartDate() {
+        return mStartDate;
+    }
+
+    public long getEndDate() {
+        return mEndDate;
+    }
+
+    public String getStartDateStr() {
+        return dateInMillisToString(mStartDate);
+    }
+
+    public String getEndDateStr() {
+        return dateInMillisToString(mEndDate);
+    }
+
+    private String dateInMillisToString(long dateInMillis) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
+        return dateFormat.format(new Date(dateInMillis));
+    }
+
     public String getDates() {
-        return (mStartDate != null && mEndDate != null) ? mStartDate + " - " + mEndDate : "";
+        if (mStartDate == 0L || mEndDate == 0L) return "";
+        return getStartDateStr() + " - " + getEndDateStr();
     }
 
     public static List<Trip> testUpcoming() {
         List<Trip> upcoming = new ArrayList<>();
-        upcoming.add(new Trip("Yosemite", "06/06/2016", "06/08/2016"));
-        upcoming.add(new Trip("Las Vegas", "07/06/2016", "07/08/2016"));
-        upcoming.add(new Trip("New York", "06/06/2016", "06/08/2016"));
+        upcoming.add(new Trip("Yosemite", 1463705102470L, 1464741925678L));
+        upcoming.add(new Trip("Las Vegas", 1463705102470L, 1464741925678L));
+        upcoming.add(new Trip("New York", 1463705102470L, 1464741925678L));
         return upcoming;
     }
 
     public static List<Trip> testPast() {
         List<Trip> past = new ArrayList<>();
-        past.add(new Trip("Yosemite", "06/06/2015", "06/08/2015"));
-        past.add(new Trip("Las Vegas", "07/06/2015", "07/08/2015"));
-        past.add(new Trip("New York", "06/06/2015", "06/08/2015"));
+        past.add(new Trip("Yosemite", 1463705102470L, 1464741925678L));
+        past.add(new Trip("Las Vegas", 1463705102470L, 1464741925678L));
+        past.add(new Trip("New York", 1463705102470L, 1464741925678L));
         return past;
     }
 
@@ -93,14 +118,14 @@ public class Trip implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.mTitle);
-        dest.writeString(this.mStartDate);
-        dest.writeString(this.mEndDate);
+        dest.writeLong(this.mStartDate);
+        dest.writeLong(this.mEndDate);
     }
 
     protected Trip(Parcel in) {
         this.mTitle = in.readString();
-        this.mStartDate = in.readString();
-        this.mEndDate = in.readString();
+        this.mStartDate = in.readLong();
+        this.mEndDate = in.readLong();
     }
 
     public static final Parcelable.Creator<Trip> CREATOR = new Parcelable.Creator<Trip>() {

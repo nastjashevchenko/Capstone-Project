@@ -88,15 +88,14 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        String dateString = getResources().getString(R.string.date_template,
-                dayOfMonth, monthOfYear + 1, year);
+        Calendar c = Calendar.getInstance();
+        c.set(year, monthOfYear, dayOfMonth);
         if (start) {
-            mStartDate.setText(dateString);
-            // TODO start and end date should be in date format, not strings like now
-            //mTrip.setDateStart();
+            mTrip.setStartDate(c.getTimeInMillis());
+            mStartDate.setText(mTrip.getStartDateStr());
         } else {
-            mEndDate.setText(dateString);
-            //mTrip.setDateEnd();
+            mTrip.setEndDate(c.getTimeInMillis());
+            mEndDate.setText(mTrip.getEndDateStr());
         }
     }
 }
