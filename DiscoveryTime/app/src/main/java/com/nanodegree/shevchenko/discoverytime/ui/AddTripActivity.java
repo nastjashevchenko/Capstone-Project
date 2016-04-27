@@ -46,7 +46,10 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         mTitle = (EditText) findViewById(R.id.title);
         mStartDate = (EditText) findViewById(R.id.start_date);
         mEndDate = (EditText) findViewById(R.id.end_date);
+        View mClearDestination = findViewById(R.id.place_autocomplete_clear_button);
 
+        // Hide clear button in autocomplete field, destination field is required
+        mClearDestination.setVisibility(View.INVISIBLE);
         mAutocomplete.setHint(getResources().getString(R.string.destination));
 
         mAutocomplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
