@@ -55,7 +55,7 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         mAutocomplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                mTrip.setId(place.getId());
+                mTrip.setPlaceId(place.getId());
                 placeName = place.getName().toString();
                 mTrip.setDefaultTitle(placeName);
                 if (mTitle.getText().length() <= 0) mTitle.setText(placeName);
@@ -98,6 +98,7 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         Calendar c = Calendar.getInstance();
         c.set(year, monthOfYear, dayOfMonth);
         long date = c.getTimeInMillis();
+        // Saving dates to local variables and assign to mTrip after validations
         if (start) {
             startDate = date;
             mStartDate.setText(Util.longDateToString(date));
@@ -135,8 +136,10 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
             return;
         }
 
-        // All fields should be set in Trip, save new trip to DB
-        Log.d(LOG_TAG, "Need to save trip here");
+        // Save new trip to DB
+        mTrip.setStartDate(startDate);
+        mTrip.setEndDate(endDate);
+        mTrip.save();
 
         // Close Activity and get back to list
         finish();

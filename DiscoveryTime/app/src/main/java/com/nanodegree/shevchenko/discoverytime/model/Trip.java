@@ -4,13 +4,30 @@ package com.nanodegree.shevchenko.discoverytime.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.nanodegree.shevchenko.discoverytime.Util;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Trip implements Parcelable {
-    private String mId;
+@Table(name = "Trip")
+public class Trip extends Model implements Parcelable {
+    @Column(name = "PlaceId")
+    private String mPlaceId;
+
+    @Column(name = "DefaultTitle")
+    private String mDefaultTitle;
+
+    @Column(name = "Title")
+    private String mTitle;
+
+    @Column(name = "StartDate")
+    private long mStartDate;
+
+    @Column(name = "EndDate")
+    private long mEndDate;
 
     public String getDefaultTitle() {
         return mDefaultTitle;
@@ -20,22 +37,9 @@ public class Trip implements Parcelable {
         this.mDefaultTitle = defaultTitle;
     }
 
-    private String mDefaultTitle;
-    private String mTitle;
-    private long mStartDate;
-    private long mEndDate;
-
-    public Trip() {};
-
-    public Trip(String title) {
-        this.mTitle = title;
-    }
-
-    public Trip(String title, long startDate, long endDate) {
-        this.mTitle = title;
-        this.mStartDate = startDate;
-        this.mEndDate = endDate;
-    }
+    public Trip() {
+        super();
+    };
 
     public void setTitle(String title) {
         this.mTitle = title;
@@ -53,8 +57,8 @@ public class Trip implements Parcelable {
         return mTitle;
     }
 
-    public String getId() {
-        return mId;
+    public String getPlaceId() {
+        return mPlaceId;
     }
 
     public long getStartDate() {
@@ -78,30 +82,28 @@ public class Trip implements Parcelable {
         return getStartDateStr() + " - " + getEndDateStr();
     }
 
-    public static List<Trip> testUpcoming() {
-        List<Trip> upcoming = new ArrayList<>();
-        upcoming.add(new Trip("Yosemite", 1463705102470L, 1464741925678L));
-        upcoming.add(new Trip("Las Vegas", 1463705102470L, 1464741925678L));
-        upcoming.add(new Trip("New York", 1463705102470L, 1464741925678L));
-        return upcoming;
+    public static List<Trip> getUpcoming() {
+        return new Select()
+                .from(Trip.class)
+                .where("EndDate >= ?", System.currentTimeMillis())
+                .orderBy("StartDate ASC")
+                .execute();
     }
 
-    public static List<Trip> testPast() {
-        List<Trip> past = new ArrayList<>();
-        past.add(new Trip("Yosemite", 1463705102470L, 1464741925678L));
-        past.add(new Trip("Las Vegas", 1463705102470L, 1464741925678L));
-        past.add(new Trip("New York", 1463705102470L, 1464741925678L));
-        return past;
+    public static List<Trip> getPast() {
+        return new Select()
+                .from(Trip.class)
+                .where("EndDate != ?", 0L)
+                .where("EndDate < ?", System.currentTimeMillis())
+                .orderBy("StartDate DESC")
+                .execute();
     }
 
-    public static List<Trip> testWishList() {
-        List<Trip> wishlist = new ArrayList<>();
-        wishlist.add(new Trip("Ireland"));
-        wishlist.add(new Trip("Hollywood"));
-        wishlist.add(new Trip("Mexico"));
-        wishlist.add(new Trip("Moscow, Russia"));
-        wishlist.add(new Trip("Tokyo"));
-        return wishlist;
+    public static List<Trip> getWishList() {
+        return new Select()
+                .from(Trip.class)
+                .where("StartDate = ?", 0L)
+                .execute();
     }
 
     @Override
@@ -134,7 +136,7 @@ public class Trip implements Parcelable {
         }
     };
 
-    public void setId(String id) {
-        this.mId = id;
+    public void setPlaceId(String id) {
+        this.mPlaceId = id;
     }
 }

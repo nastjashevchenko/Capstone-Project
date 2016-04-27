@@ -40,12 +40,18 @@ public class PageFragment extends Fragment {
         ListView tripListView = (ListView) view.findViewById(R.id.trip_list);
 
         List<Trip> tripList = new ArrayList<>();
-        if (mPage == 1) tripList = Trip.testUpcoming();
-        if (mPage == 2) tripList = Trip.testWishList();
-        if (mPage == 3) tripList = Trip.testPast();
+        if (mPage == 1) tripList = Trip.getUpcoming();
+        if (mPage == 2) tripList = Trip.getWishList();
+        if (mPage == 3) tripList = Trip.getPast();
 
         TripAdapter tripAdapter = new TripAdapter(getContext(), tripList);
         tripListView.setAdapter(tripAdapter);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // TODO update list onResume, trips can be added/deleted/changed
     }
 }
