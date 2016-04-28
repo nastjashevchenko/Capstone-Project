@@ -14,11 +14,10 @@ import java.util.List;
 
 @Table(name = "Trip")
 public class Trip extends Model implements Parcelable {
+    public static final String EXTRA_NAME = "TRIP";
+
     @Column(name = "PlaceId")
     private String mPlaceId;
-
-    @Column(name = "DefaultTitle")
-    private String mDefaultTitle;
 
     @Column(name = "Title")
     private String mTitle;
@@ -29,17 +28,11 @@ public class Trip extends Model implements Parcelable {
     @Column(name = "EndDate")
     private long mEndDate;
 
-    public String getDefaultTitle() {
-        return mDefaultTitle;
-    }
-
-    public void setDefaultTitle(String defaultTitle) {
-        this.mDefaultTitle = defaultTitle;
-    }
-
     public Trip() {
         super();
     };
+
+    // ---- Getters and Setters ----
 
     public void setTitle(String title) {
         this.mTitle = title;
@@ -51,6 +44,10 @@ public class Trip extends Model implements Parcelable {
 
     public void setEndDate(long endDate) {
         this.mEndDate = endDate;
+    }
+
+    public void setPlaceId(String id) {
+        this.mPlaceId = id;
     }
 
     public String getTitle() {
@@ -82,6 +79,8 @@ public class Trip extends Model implements Parcelable {
         return getStartDateStr() + " - " + getEndDateStr();
     }
 
+    // ---- DB queries ----
+
     public static List<Trip> getUpcoming() {
         return new Select()
                 .from(Trip.class)
@@ -105,6 +104,8 @@ public class Trip extends Model implements Parcelable {
                 .where("StartDate = ?", 0L)
                 .execute();
     }
+
+    // ---- Parcelable methods ----
 
     @Override
     public int describeContents() {
@@ -135,8 +136,4 @@ public class Trip extends Model implements Parcelable {
             return new Trip[size];
         }
     };
-
-    public void setPlaceId(String id) {
-        this.mPlaceId = id;
-    }
 }

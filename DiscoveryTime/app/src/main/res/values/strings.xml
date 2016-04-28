@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DiscoveryTime</string>
+    <string name="app_name">Discovery Time</string>
     <string name="action_settings">Settings</string>
 
     <!-- Tab names for trip lists -->
@@ -22,4 +22,6 @@
     <string name="destination_empty">Destination is not set</string>
     <string name="one_date_set">Both or no dates must be selected</string>
     <string name="start_after_end">Start date can\'t be later then end date</string>
+
+    <string name="title_activity_trip">Trip Details</string>
 </resources>

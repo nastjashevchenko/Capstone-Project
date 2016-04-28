@@ -3,8 +3,6 @@ package com.nanodegree.shevchenko.discoverytime.ui;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -46,39 +44,24 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         mTitle = (EditText) findViewById(R.id.title);
         mStartDate = (EditText) findViewById(R.id.start_date);
         mEndDate = (EditText) findViewById(R.id.end_date);
-        View mClearDestination = findViewById(R.id.place_autocomplete_clear_button);
 
+        // TODO Looks like it is not working now
+        View mClearDestination = findViewById(com.google.android.gms.R.id.place_autocomplete_clear_button);
         // Hide clear button in autocomplete field, destination field is required
-        mClearDestination.setVisibility(View.INVISIBLE);
-        mAutocomplete.setHint(getResources().getString(R.string.destination));
+        mClearDestination.setVisibility(View.GONE);
 
+        mAutocomplete.setHint(getResources().getString(R.string.destination));
         mAutocomplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 mTrip.setPlaceId(place.getId());
                 placeName = place.getName().toString();
-                mTrip.setDefaultTitle(placeName);
                 if (mTitle.getText().length() <= 0) mTitle.setText(placeName);
             }
 
             @Override
             public void onError(Status status) {
                 Log.d(LOG_TAG, "An error occurred while searching for a place: " + status);
-            }
-        });
-
-        mTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mTrip.setTitle(s.toString());
             }
         });
     }
@@ -137,6 +120,8 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         }
 
         // Save new trip to DB
+        String title = mTitle.getText().toString();
+        mTrip.setTitle((title.isEmpty()) ? placeName : title);
         mTrip.setStartDate(startDate);
         mTrip.setEndDate(endDate);
         mTrip.save();
