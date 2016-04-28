@@ -42,13 +42,20 @@ public class PageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         ListView tripListView = (ListView) view.findViewById(R.id.trip_list);
 
-        List<Trip> tripList = new ArrayList<>();
-        if (mPage == 1) tripList = Trip.getUpcoming();
-        if (mPage == 2) tripList = Trip.getWishList();
-        if (mPage == 3) tripList = Trip.getPast();
+        if (mPage == 1) mTripList = Trip.getUpcoming();
+        if (mPage == 2) mTripList = Trip.getWishList();
+        if (mPage == 3) mTripList = Trip.getPast();
 
-        TripAdapter tripAdapter = new TripAdapter(getContext(), tripList);
+        TripAdapter tripAdapter = new TripAdapter(getContext(), mTripList);
         tripListView.setAdapter(tripAdapter);
+        tripListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent tripActivity = new Intent(getContext(), TripActivity.class);
+                tripActivity.putExtra(Trip.EXTRA_NAME, mTripList.get(position));
+                startActivity(tripActivity);
+            }
+        });
         return view;
     }
 
