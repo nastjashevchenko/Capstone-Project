@@ -52,7 +52,8 @@ public class PageFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent tripActivity = new Intent(getContext(), TripActivity.class);
-                tripActivity.putExtra(Trip.EXTRA_NAME, mTripList.get(position));
+                //tripActivity.putExtra(Trip.EXTRA_NAME, mTripList.get(position));
+                tripActivity.putExtra(Trip.EXTRA_ID_NAME, mTripList.get(position).getId());
                 startActivity(tripActivity);
             }
         });

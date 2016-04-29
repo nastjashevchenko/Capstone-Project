@@ -40,6 +40,23 @@
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add places"
+            android:onClick="addPlace"/>
+
+        <!--android.support.v7.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView-->
+
+        <ListView
+            android:id="@+id/poi_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

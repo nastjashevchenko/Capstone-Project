@@ -4,6 +4,7 @@ package com.nanodegree.shevchenko.discoverytime.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.Cache;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -15,6 +16,7 @@ import java.util.List;
 @Table(name = "Trip")
 public class Trip extends Model implements Parcelable {
     public static final String EXTRA_NAME = "TRIP";
+    public static final String EXTRA_ID_NAME = "id";
 
     @Column(name = "PlaceId")
     private String mPlaceId;
@@ -80,6 +82,12 @@ public class Trip extends Model implements Parcelable {
     }
 
     // ---- DB queries ----
+    public static Trip getById(Long id) {
+        return new Select()
+                .from(Trip.class)
+                .where(Cache.getTableInfo(Trip.class).getIdName() + " >= ?", id)
+                .executeSingle();
+    }
 
     public static List<Trip> getUpcoming() {
         return new Select()
@@ -105,6 +113,10 @@ public class Trip extends Model implements Parcelable {
                 .execute();
     }
 
+    public List<Poi> getPois() {
+        return getMany(Poi.class, "Trip");
+    }
+
     // ---- Parcelable methods ----
 
     @Override
@@ -114,18 +126,20 @@ public class Trip extends Model implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mPlaceId);
         dest.writeString(this.mTitle);
         dest.writeLong(this.mStartDate);
         dest.writeLong(this.mEndDate);
     }
 
     protected Trip(Parcel in) {
+        this.mPlaceId = in.readString();
         this.mTitle = in.readString();
         this.mStartDate = in.readLong();
         this.mEndDate = in.readLong();
     }
 
-    public static final Parcelable.Creator<Trip> CREATOR = new Parcelable.Creator<Trip>() {
+    public static final Creator<Trip> CREATOR = new Creator<Trip>() {
         @Override
         public Trip createFromParcel(Parcel source) {
             return new Trip(source);
