@@ -52,11 +52,10 @@
             android:layout_height="wrap_content">
         </android.support.v7.widget.RecyclerView-->
 
-        <ListView
+        <se.emilsjolander.stickylistheaders.StickyListHeadersListView
             android:id="@+id/poi_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ListView>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

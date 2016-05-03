@@ -16,15 +16,19 @@ public class Poi extends Model {
     @Column(name = "PlaceId", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String mPlaceId;
 
-    public String getName() {
-        return mName;
-    }
-
     @Column(name = "Name")
     private String mName;
 
     @Column(name = "Trip")
     private Trip mTrip;
+
+    public Integer getDay() {
+        return mDay;
+    }
+
+    public void setDay(Integer mDay) {
+        this.mDay = mDay;
+    }
 
     @Column(name = "Day")
     private Integer mDay;
@@ -45,4 +49,10 @@ public class Poi extends Model {
                 .from(Poi.class)
                 .execute();
     }
+
+    public String getName() {
+        return mName;
+    }
+
+
 }

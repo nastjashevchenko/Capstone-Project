@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -16,22 +14,23 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.nanodegree.shevchenko.discoverytime.R;
+import com.nanodegree.shevchenko.discoverytime.adapters.PoiStickyListAdapter;
 import com.nanodegree.shevchenko.discoverytime.model.Poi;
 import com.nanodegree.shevchenko.discoverytime.model.Trip;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class TripActivity extends AppCompatActivity {
 
     private Trip mTrip;
     private List<Poi> mPois;
-    private List<String> mNames = new ArrayList<>();
 
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 100;
     private static final String LOG_TAG = TripActivity.class.getName();
 
-    private ListView mPoiList;
+    private StickyListHeadersListView mPoiList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class TripActivity extends AppCompatActivity {
 
         // TODO Query by id for now. Change when get to final data model
         mTrip = Trip.getById(getIntent().getLongExtra(Trip.EXTRA_ID_NAME, 0L));
-        mPoiList = (ListView) findViewById(R.id.poi_list);
+        mPoiList = (StickyListHeadersListView) findViewById(R.id.poi_list);
         TextView titleView = (TextView) findViewById(R.id.title);
         TextView datesView = (TextView) findViewById(R.id.trip_dates);
         titleView.setText(mTrip.getTitle());
@@ -50,13 +49,8 @@ public class TripActivity extends AppCompatActivity {
 
         // TODO Use cursor adapter
         mPois = mTrip.getPois();
-        for (Poi p : mPois) {
-            mNames.add(p.getName());
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, mNames);
+        PoiStickyListAdapter adapter = new PoiStickyListAdapter(this, mPois);
         mPoiList.setAdapter(adapter);
-
     }
 
     public void addPlace(View view) {
@@ -81,6 +75,8 @@ public class TripActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 Poi poi = new Poi(place.getId(), place.getName().toString(), mTrip);
+                // TODO for testing before real days added
+                poi.setDay(poi.getName().length());
                 poi.save();
                 Log.i(LOG_TAG, "Place: " + place.getName());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
