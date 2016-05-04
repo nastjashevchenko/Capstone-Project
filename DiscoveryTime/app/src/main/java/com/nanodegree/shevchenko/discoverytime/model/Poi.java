@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Table(name = "Poi")
 public class Poi extends Model {
-    @Column(name = "PlaceId", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    @Column(name = "PlaceId", unique = true, onUniqueConflict = Column.ConflictAction.IGNORE)
     private String mPlaceId;
 
     @Column(name = "Name")
@@ -42,6 +42,8 @@ public class Poi extends Model {
         mPlaceId = placeId;
         mName = name;
         mTrip = trip;
+        // -1 means place is not attached to any day
+        mDay = -1;
     }
 
     public static List<Poi> getAll() {
@@ -53,6 +55,4 @@ public class Poi extends Model {
     public String getName() {
         return mName;
     }
-
-
 }

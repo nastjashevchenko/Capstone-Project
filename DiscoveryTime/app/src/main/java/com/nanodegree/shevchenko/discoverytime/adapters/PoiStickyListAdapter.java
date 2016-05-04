@@ -26,7 +26,8 @@ public class PoiStickyListAdapter extends BaseAdapter implements StickyListHeade
     public View getHeaderView(int position, View convertView, ViewGroup parent) {
         TextView titleView = new TextView(context);
         Poi poi = poiList.get(position);
-        titleView.setText(poi.getDay().toString());
+        String day = (poi.getDay() == -1) ? "Not planned yet" : poi.getDay().toString();
+        titleView.setText(day);
         titleView.setTextSize(24);
         titleView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
 

@@ -1,11 +1,16 @@
 package com.nanodegree.shevchenko.discoverytime.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -51,6 +56,38 @@ public class TripActivity extends AppCompatActivity {
         mPois = mTrip.getPois();
         PoiStickyListAdapter adapter = new PoiStickyListAdapter(this, mPois);
         mPoiList.setAdapter(adapter);
+
+        mPoiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_poi_edit, null);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                alertDialogBuilder.setView(dialogView);
+                final EditText day = (EditText) dialogView.findViewById(R.id.day);
+
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // TODO recreate list after day is changed
+                                        // because list is sorted by day
+                                        Poi poi = mPois.get(position);
+                                        poi.setDay(Integer.valueOf(day.getText().toString()));
+                                        poi.save();
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        });
     }
 
     public void addPlace(View view) {
@@ -75,8 +112,6 @@ public class TripActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 Poi poi = new Poi(place.getId(), place.getName().toString(), mTrip);
-                // TODO for testing before real days added
-                poi.setDay(poi.getName().length());
                 poi.save();
                 Log.i(LOG_TAG, "Place: " + place.getName());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {

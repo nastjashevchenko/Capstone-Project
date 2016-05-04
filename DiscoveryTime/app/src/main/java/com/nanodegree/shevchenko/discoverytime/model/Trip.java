@@ -114,7 +114,10 @@ public class Trip extends Model implements Parcelable {
     }
 
     public List<Poi> getPois() {
-        return getMany(Poi.class, "Trip");
+        return new Select().from(Poi.class)
+                .where(Cache.getTableName(Poi.class) + "." + "Trip" + "=?", getId())
+                .orderBy("Day ASC")
+                .execute();
     }
 
     // ---- Parcelable methods ----
