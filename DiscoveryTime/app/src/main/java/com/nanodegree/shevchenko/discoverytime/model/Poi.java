@@ -3,9 +3,6 @@ package com.nanodegree.shevchenko.discoverytime.model;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
-
-import java.util.List;
 
 /**
  * This class holds places user want to visit during the trip.
