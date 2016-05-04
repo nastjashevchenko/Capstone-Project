@@ -23,5 +23,9 @@
     <string name="one_date_set">Both or no dates must be selected</string>
     <string name="start_after_end">Start date can\'t be later then end date</string>
 
+    <!-- Trip details activity -->
     <string name="title_activity_trip">Trip Details</string>
+    <string name="add_place">Add place</string>
+    <string name="edit_trip">Edit trip</string>
+    <string name="delete_trip">Delete trip</string>
 </resources>
