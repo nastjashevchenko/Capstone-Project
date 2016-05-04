@@ -46,12 +46,6 @@ public class Poi extends Model {
         mDay = -1;
     }
 
-    public static List<Poi> getAll() {
-        return new Select()
-                .from(Poi.class)
-                .execute();
-    }
-
     public String getName() {
         return mName;
     }
