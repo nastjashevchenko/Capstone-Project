@@ -66,6 +66,7 @@ public class TripActivity extends AppCompatActivity {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
                 alertDialogBuilder.setView(dialogView);
                 final EditText day = (EditText) dialogView.findViewById(R.id.day);
+                final EditText note = (EditText) dialogView.findViewById(R.id.note);
 
                 alertDialogBuilder
                         .setCancelable(false)
@@ -76,6 +77,7 @@ public class TripActivity extends AppCompatActivity {
                                         // because list is sorted by day
                                         Poi poi = mPois.get(position);
                                         poi.setDay(Integer.valueOf(day.getText().toString()));
+                                        poi.setNote(note.getText().toString());
                                         poi.save();
                                     }
                                 })

@@ -19,13 +19,8 @@ public class Poi extends Model {
     @Column(name = "Trip")
     private Trip mTrip;
 
-    public Integer getDay() {
-        return mDay;
-    }
-
-    public void setDay(Integer mDay) {
-        this.mDay = mDay;
-    }
+    @Column(name = "Note")
+    private String mNote;
 
     @Column(name = "Day")
     private Integer mDay;
@@ -45,5 +40,21 @@ public class Poi extends Model {
 
     public String getName() {
         return mName;
+    }
+
+    public Integer getDay() {
+        return mDay;
+    }
+
+    public void setDay(Integer mDay) {
+        this.mDay = mDay;
+    }
+
+    public String getNote() {
+        return mNote;
+    }
+
+    public void setNote(String mNote) {
+        this.mNote = mNote;
     }
 }
