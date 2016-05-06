@@ -31,7 +31,6 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
     @BindView(R.id.title) EditText mTitle;
     @BindView(R.id.start_date) EditText mStartDate;
     @BindView(R.id.end_date) EditText mEndDate;
-    @BindView(R.id.place_autocomplete_fragment) PlaceAutocompleteFragment mAutocomplete;
 
     private boolean start;
     private long startDate;
@@ -43,6 +42,9 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
         ButterKnife.bind(this);
+
+        PlaceAutocompleteFragment mAutocomplete = (PlaceAutocompleteFragment) getFragmentManager()
+                                 .findFragmentById(R.id.place_autocomplete_fragment);
 
         // TODO Looks like it is not working now
         View mClearDestination = findViewById(com.google.android.gms.R.id.place_autocomplete_clear_button);
