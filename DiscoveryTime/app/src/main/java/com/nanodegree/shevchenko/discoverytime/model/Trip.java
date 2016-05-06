@@ -78,6 +78,7 @@ public class Trip extends Model implements Parcelable {
 
     public String getDates() {
         if (mStartDate == 0L || mEndDate == 0L) return "";
+        // TODO format to strings.xml
         return getStartDateStr() + " - " + getEndDateStr();
     }
 

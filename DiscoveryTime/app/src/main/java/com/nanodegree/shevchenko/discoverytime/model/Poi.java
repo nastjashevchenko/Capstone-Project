@@ -3,6 +3,7 @@ package com.nanodegree.shevchenko.discoverytime.model;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.nanodegree.shevchenko.discoverytime.Util;
 
 /**
  * This class holds places user want to visit during the trip.
@@ -56,5 +57,9 @@ public class Poi extends Model {
 
     public void setNote(String mNote) {
         this.mNote = mNote;
+    }
+
+    public String getDateStr() {
+        return (mDay == -1) ? "" : Util.getDateByDayNumber(mTrip.getStartDate(), mDay);
     }
 }
