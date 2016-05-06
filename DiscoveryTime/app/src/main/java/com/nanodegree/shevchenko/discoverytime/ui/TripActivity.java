@@ -72,7 +72,7 @@ public class TripActivity extends AppCompatActivity {
                         android.R.layout.simple_spinner_item, mTrip.getAllDates());
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
-                spinner.setSelection(mPois.get(position).getDay() + 1);
+                spinner.setSelection(mPois.get(position).getDay());
                 final EditText note = (EditText) dialogView.findViewById(R.id.note);
 
                 alertDialogBuilder
@@ -83,7 +83,7 @@ public class TripActivity extends AppCompatActivity {
                                         // TODO recreate list after day is changed
                                         // because list is sorted by day
                                         Poi poi = mPois.get(position);
-                                        poi.setDay(spinner.getSelectedItemPosition() - 1);
+                                        poi.setDay(spinner.getSelectedItemPosition());
                                         poi.setNote(note.getText().toString());
                                         poi.save();
                                     }
@@ -110,7 +110,7 @@ public class TripActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        // TODO Add delete, edit and share functions
+        // TODO Add delete, edit, map and share functions
         if (id == R.id.action_add_place) {
             addPlace();
             return true;

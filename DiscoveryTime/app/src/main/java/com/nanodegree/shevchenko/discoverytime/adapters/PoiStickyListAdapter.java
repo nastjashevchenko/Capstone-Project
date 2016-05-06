@@ -34,9 +34,9 @@ public class PoiStickyListAdapter extends BaseAdapter implements StickyListHeade
         Poi poi = poiList.get(position);
         Integer day = poi.getDay();
 
-        String dayStr = (day == -1)
+        String dayStr = (day == 0)
                 ? context.getResources().getString(R.string.not_planned_header)
-                : context.getResources().getString(R.string.day_number, day + 1);
+                : context.getResources().getString(R.string.day_number, day);
         TextView dayNumberView = (TextView) convertView.findViewById(R.id.day_number);
         TextView dateView = (TextView) convertView.findViewById(R.id.date);
 

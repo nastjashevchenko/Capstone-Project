@@ -35,9 +35,8 @@ public class Poi extends Model {
         mPlaceId = placeId;
         mName = name;
         mTrip = trip;
-        // -1 means place is not attached to any day
-        // TODO set "not set" to 0 and then first day would have index 1
-        mDay = -1;
+        // 0 means place is not attached to any day
+        mDay = 0;
     }
 
     public String getName() {
@@ -61,6 +60,6 @@ public class Poi extends Model {
     }
 
     public String getDateStr() {
-        return (mDay == -1) ? "" : Util.getDateByDayNumber(mTrip.getStartDate(), mDay);
+        return (mDay == 0) ? "" : Util.getDateByDayNumber(mTrip.getStartDate(), mDay);
     }
 }
