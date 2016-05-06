@@ -12,7 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -65,7 +67,12 @@ public class TripActivity extends AppCompatActivity {
                 View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_poi_edit, null);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
                 alertDialogBuilder.setView(dialogView);
-                final EditText day = (EditText) dialogView.findViewById(R.id.day);
+                final Spinner spinner = (Spinner) dialogView.findViewById(R.id.days_spinner);
+                ArrayAdapter<CharSequence> adapter = new ArrayAdapter(view.getContext(),
+                        android.R.layout.simple_spinner_item, mTrip.getAllDates());
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
+                spinner.setSelection(mPois.get(position).getDay() + 1);
                 final EditText note = (EditText) dialogView.findViewById(R.id.note);
 
                 alertDialogBuilder
@@ -76,7 +83,7 @@ public class TripActivity extends AppCompatActivity {
                                         // TODO recreate list after day is changed
                                         // because list is sorted by day
                                         Poi poi = mPois.get(position);
-                                        poi.setDay(Integer.valueOf(day.getText().toString()));
+                                        poi.setDay(spinner.getSelectedItemPosition() - 1);
                                         poi.setNote(note.getText().toString());
                                         poi.save();
                                     }

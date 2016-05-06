@@ -36,6 +36,7 @@ public class Poi extends Model {
         mName = name;
         mTrip = trip;
         // -1 means place is not attached to any day
+        // TODO set "not set" to 0 and then first day would have index 1
         mDay = -1;
     }
 

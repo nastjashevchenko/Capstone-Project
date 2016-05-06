@@ -154,4 +154,8 @@ public class Trip extends Model implements Parcelable {
             return new Trip[size];
         }
     };
+
+    public List<String> getAllDates() {
+        return Util.getDaysBetweenDates(mStartDate, mEndDate);
+    }
 }

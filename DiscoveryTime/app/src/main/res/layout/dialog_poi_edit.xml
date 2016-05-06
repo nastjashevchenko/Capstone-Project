@@ -3,10 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!-- TODO change to drop down list-->
-    <EditText
-        android:id="@+id/day"
-        android:hint="Set day"
+    <Spinner
+        android:id="@+id/days_spinner"
         android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

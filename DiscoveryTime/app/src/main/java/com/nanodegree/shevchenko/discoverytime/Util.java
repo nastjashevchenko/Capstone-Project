@@ -14,14 +14,18 @@ public class Util {
     }
 
     public static List<String> getDaysBetweenDates(long startDate, long endDate) {
+        // TODO refactor this method
         List<String> dates = new ArrayList<>();
+        dates.add("Not planned yet");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(startDate);
+        int i = 1;
 
         while (calendar.getTimeInMillis() < endDate) {
             String result = longDateToString(calendar.getTimeInMillis());
-            dates.add(result);
+            dates.add("Day " + String.valueOf(i) + "        " + result);
             calendar.add(Calendar.DATE, 1);
+            i++;
         }
         return dates;
     }
