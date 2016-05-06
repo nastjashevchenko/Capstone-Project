@@ -29,6 +29,8 @@ import com.nanodegree.shevchenko.discoverytime.model.Trip;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class TripActivity extends AppCompatActivity {
@@ -39,29 +41,30 @@ public class TripActivity extends AppCompatActivity {
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 100;
     private static final String LOG_TAG = TripActivity.class.getName();
 
-    private StickyListHeadersListView mPoiList;
+    @BindView(R.id.poi_list) StickyListHeadersListView mPoiListView;
+    @BindView(R.id.title) TextView mTitleView;
+    @BindView(R.id.trip_dates) TextView mDatesView;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
 
         // TODO Query by id for now. Change when get to final data model
         mTrip = Trip.getById(getIntent().getLongExtra(Trip.EXTRA_ID_NAME, 0L));
-        mPoiList = (StickyListHeadersListView) findViewById(R.id.poi_list);
-        TextView titleView = (TextView) findViewById(R.id.title);
-        TextView datesView = (TextView) findViewById(R.id.trip_dates);
-        titleView.setText(mTrip.getTitle());
-        datesView.setText(mTrip.getDates());
+        mTitleView.setText(mTrip.getTitle());
+        mDatesView.setText(mTrip.getDates());
 
         // TODO Use cursor adapter
         mPois = mTrip.getPois();
-        PoiStickyListAdapter adapter = new PoiStickyListAdapter(this, mPois);
-        mPoiList.setAdapter(adapter);
+        mPoiListView.setAdapter(new PoiStickyListAdapter(this, mPois));
 
-        mPoiList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // TODO Refactor: Move dialog outside activity
+        mPoiListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_poi_edit, null);

@@ -16,8 +16,12 @@ import com.nanodegree.shevchenko.discoverytime.model.Trip;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class PageFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
+    @BindView(R.id.trip_list) ListView mTripListView;
 
     private int mPage;
     private List<Trip> mTripList = new ArrayList<>();
@@ -40,15 +44,15 @@ public class PageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
-        ListView tripListView = (ListView) view.findViewById(R.id.trip_list);
+        ButterKnife.bind(this, view);
 
         if (mPage == 1) mTripList = Trip.getUpcoming();
         if (mPage == 2) mTripList = Trip.getWishList();
         if (mPage == 3) mTripList = Trip.getPast();
 
         TripAdapter tripAdapter = new TripAdapter(getContext(), mTripList);
-        tripListView.setAdapter(tripAdapter);
-        tripListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mTripListView.setAdapter(tripAdapter);
+        mTripListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent tripActivity = new Intent(getContext(), TripActivity.class);

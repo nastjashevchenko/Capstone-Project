@@ -20,14 +20,18 @@ import com.nanodegree.shevchenko.discoverytime.model.Trip;
 
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AddTripActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     private static final String LOG_TAG = AddTripActivity.class.getName();
     private Trip mTrip = new Trip();
 
-    private EditText mTitle;
-    private EditText mStartDate;
-    private EditText mEndDate;
+    @BindView(R.id.title) EditText mTitle;
+    @BindView(R.id.start_date) EditText mStartDate;
+    @BindView(R.id.end_date) EditText mEndDate;
+    @BindView(R.id.place_autocomplete_fragment) PlaceAutocompleteFragment mAutocomplete;
 
     private boolean start;
     private long startDate;
@@ -38,12 +42,7 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
-
-        PlaceAutocompleteFragment mAutocomplete = (PlaceAutocompleteFragment) getFragmentManager()
-                .findFragmentById(R.id.place_autocomplete_fragment);
-        mTitle = (EditText) findViewById(R.id.title);
-        mStartDate = (EditText) findViewById(R.id.start_date);
-        mEndDate = (EditText) findViewById(R.id.end_date);
+        ButterKnife.bind(this);
 
         // TODO Looks like it is not working now
         View mClearDestination = findViewById(com.google.android.gms.R.id.place_autocomplete_clear_button);
