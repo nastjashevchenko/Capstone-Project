@@ -37,8 +37,8 @@ public class PoiStickyListAdapter extends BaseAdapter implements StickyListHeade
         String dayStr = (day == 0)
                 ? context.getResources().getString(R.string.not_planned_header)
                 : context.getResources().getString(R.string.day_number, day);
-        TextView dayNumberView = (TextView) convertView.findViewById(R.id.day_number);
-        TextView dateView = (TextView) convertView.findViewById(R.id.date);
+        TextView dayNumberView = (TextView) convertView.findViewById(R.id.title);
+        TextView dateView = (TextView) convertView.findViewById(R.id.note);
 
         dayNumberView.setText(dayStr);
         dateView.setText(poi.getDateStr());

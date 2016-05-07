@@ -47,16 +47,16 @@ public class Poi extends Model {
         return mDay;
     }
 
-    public void setDay(Integer mDay) {
-        this.mDay = mDay;
+    public void setDay(Integer day) {
+        this.mDay = day;
     }
 
     public String getNote() {
         return mNote;
     }
 
-    public void setNote(String mNote) {
-        this.mNote = mNote;
+    public void setNote(String note) {
+        this.mNote = note;
     }
 
     public String getDateStr() {

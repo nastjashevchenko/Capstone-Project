@@ -10,14 +10,14 @@
         android:background="@color/colorPrimary"/>
 
     <TextView
-        android:id="@+id/day_number"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/list_item_text_padding"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

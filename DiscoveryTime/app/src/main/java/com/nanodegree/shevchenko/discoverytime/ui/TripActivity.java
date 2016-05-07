@@ -63,7 +63,7 @@ public class TripActivity extends AppCompatActivity {
         mPoiListView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mPoiListView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter = new PoiAdapter(mPois);
+        RecyclerView.Adapter mAdapter = new PoiAdapter(this, mPois);
         mPoiListView.setAdapter(mAdapter);
 
         // TODO Refactor: Move dialog outside activity
