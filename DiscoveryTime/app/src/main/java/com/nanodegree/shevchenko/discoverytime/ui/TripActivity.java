@@ -61,8 +61,7 @@ public class TripActivity extends AppCompatActivity {
         // TODO Use cursor adapter
         mPois = mTrip.getPois();
         mPoiListView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mPoiListView.setLayoutManager(mLayoutManager);
+        mPoiListView.setLayoutManager(new LinearLayoutManager(this));
         RecyclerView.Adapter mAdapter = new PoiAdapter(this, mPois);
         mPoiListView.setAdapter(mAdapter);
 

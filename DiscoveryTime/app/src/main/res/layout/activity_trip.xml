@@ -16,8 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="240dp"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginBottom="45dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -33,19 +32,23 @@
                 android:layout_gravity="bottom"
                 android:background="@drawable/shape_scrim"/>
 
-            <TextView
-                android:id="@+id/trip_dates"
-                android:layout_gravity="bottom"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:gravity="center_horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="1dp" />
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 app:layout_collapseMode="pin"
                 android:layout_height="?attr/actionBarSize"/>
+
+            <TextView
+                android:id="@+id/trip_dates"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:textColor="@color/white"
+                android:layout_marginBottom="15dp"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.2"
+                android:gravity="center_horizontal" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
