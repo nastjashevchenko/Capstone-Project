@@ -1,20 +1,17 @@
 package com.nanodegree.shevchenko.discoverytime.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -23,7 +20,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.adapters.PoiStickyListAdapter;
+import com.nanodegree.shevchenko.discoverytime.adapters.PoiAdapter;
 import com.nanodegree.shevchenko.discoverytime.model.Poi;
 import com.nanodegree.shevchenko.discoverytime.model.Trip;
 
@@ -31,7 +28,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class TripActivity extends AppCompatActivity {
 
@@ -41,8 +37,8 @@ public class TripActivity extends AppCompatActivity {
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 100;
     private static final String LOG_TAG = TripActivity.class.getName();
 
-    @BindView(R.id.poi_list) StickyListHeadersListView mPoiListView;
-    @BindView(R.id.title) TextView mTitleView;
+    @BindView(R.id.poi_list) RecyclerView mPoiListView;
+    @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
     @BindView(R.id.trip_dates) TextView mDatesView;
     @BindView(R.id.toolbar) Toolbar mToolbar;
 
@@ -56,15 +52,22 @@ public class TripActivity extends AppCompatActivity {
 
         // TODO Query by id for now. Change when get to final data model
         mTrip = Trip.getById(getIntent().getLongExtra(Trip.EXTRA_ID_NAME, 0L));
-        mTitleView.setText(mTrip.getTitle());
+        mCollapsingToolbar.setTitle(mTrip.getTitle());
+        mCollapsingToolbar.setExpandedTitleColor(Color.WHITE);
+        mCollapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
+        mCollapsingToolbar.setExpandedTitleGravity(Gravity.BOTTOM|Gravity.CENTER);
         mDatesView.setText(mTrip.getDates());
 
         // TODO Use cursor adapter
         mPois = mTrip.getPois();
-        mPoiListView.setAdapter(new PoiStickyListAdapter(this, mPois));
+        mPoiListView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mPoiListView.setLayoutManager(mLayoutManager);
+        RecyclerView.Adapter mAdapter = new PoiAdapter(mPois);
+        mPoiListView.setAdapter(mAdapter);
 
         // TODO Refactor: Move dialog outside activity
-        mPoiListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*mPoiListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_poi_edit, null);
@@ -101,7 +104,7 @@ public class TripActivity extends AppCompatActivity {
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             }
-        });
+        });*/
     }
 
     @Override

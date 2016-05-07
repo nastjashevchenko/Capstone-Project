@@ -9,44 +9,52 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="240dp"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|enterAlways">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_collapseMode="parallax"
+                android:scaleType="centerCrop"
+                android:src="@drawable/test_image" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/shape_scrim"/>
+
+            <TextView
+                android:id="@+id/trip_dates"
+                android:layout_gravity="bottom"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                app:layout_collapseMode="pin"
+                android:layout_height="?attr/actionBarSize"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/poi_list"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/title"
-            android:textSize="36sp"
-            android:gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/trip_dates"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <se.emilsjolander.stickylistheaders.StickyListHeadersListView
-            android:id="@+id/poi_list"
-            android:layout_margin="@dimen/activity_vertical_margin"
-            android:divider="@android:color/transparent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+        android:layout_height="match_parent"/>
 
 </android.support.design.widget.CoordinatorLayout>
