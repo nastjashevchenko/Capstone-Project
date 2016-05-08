@@ -14,25 +14,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
-    private List<ListItem> mItemList = new ArrayList<>();
+    private static List<ListItem> mItemList = new ArrayList<>();
+    private OnRecyclerItemClickListener mListener;
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_POI = 1;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public interface OnRecyclerItemClickListener {
+        void onRecyclerItemClick(Poi poi);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // For header title is day number or "Not planned yet" text, note is date (can be empty)
         // For poi item title is place name, note is note added bu user (can be empty)
         TextView title;
         TextView note;
+        OnRecyclerItemClickListener mListener;
 
-        public ViewHolder(View poiItemView) {
+        public ViewHolder(View poiItemView, OnRecyclerItemClickListener listener) {
             super(poiItemView);
             title = (TextView) poiItemView.findViewById(R.id.title);
             note = (TextView) poiItemView.findViewById(R.id.note);
+            poiItemView.setOnClickListener(this);
+            mListener = listener;
+        }
+
+        @Override
+        public void onClick(View view) {
+            ListItem item = mItemList.get(getAdapterPosition());
+            if (item.isHeader) return;
+            mListener.onRecyclerItemClick(item.poi);
         }
     }
 
     public PoiAdapter(Context context, List<Poi> poiList) {
+        mListener = (OnRecyclerItemClickListener) context;
         // Need to build list of recyclerview items, need to insert headers to list of places
         int lastDayNumber = -1;
         for (int i = 0; i < poiList.size(); i++) {
@@ -44,9 +60,9 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
                 String dayStr = (dayNumber == 0)
                         ? context.getResources().getString(R.string.not_planned_header)
                         : context.getResources().getString(R.string.day_number, dayNumber);
-                mItemList.add(new ListItem(dayStr, poi.getDateStr(), true));
+                mItemList.add(new ListItem(dayStr, poi.getDateStr(), true, null));
             }
-            mItemList.add(new ListItem(poi.getName(), poi.getNote(), false));
+            mItemList.add(new ListItem(poi.getName(), poi.getNote(), false, poi));
         }
     }
 
@@ -66,7 +82,7 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_poi, parent, false);
         }
-        return new ViewHolder(view);
+        return new ViewHolder(view, mListener);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -88,12 +104,14 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
         boolean isHeader;
         String title;
         String note;
+        // Save Poi object if it is not header
+        Poi poi;
 
-        public ListItem(String title, String note, boolean isHeader) {
+        public ListItem(String title, String note, boolean isHeader, Poi poi) {
             this.isHeader = isHeader;
             this.title = title;
             this.note = note;
+            this.poi = poi;
         }
     }
-
 }

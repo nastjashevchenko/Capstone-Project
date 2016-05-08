@@ -1,8 +1,10 @@
 package com.nanodegree.shevchenko.discoverytime.model;
 
+import com.activeandroid.Cache;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.nanodegree.shevchenko.discoverytime.Util;
 
 /**
@@ -11,6 +13,8 @@ import com.nanodegree.shevchenko.discoverytime.Util;
  */
 @Table(name = "Poi")
 public class Poi extends Model {
+    public static final String POI_ID = "PoiId";
+
     @Column(name = "PlaceId", unique = true, onUniqueConflict = Column.ConflictAction.IGNORE)
     private String mPlaceId;
 
@@ -39,8 +43,19 @@ public class Poi extends Model {
         mDay = 0;
     }
 
+    public static Poi getById(Long id) {
+        return new Select()
+                .from(Poi.class)
+                .where(Cache.getTableInfo(Poi.class).getIdName() + " >= ?", id)
+                .executeSingle();
+    }
+
     public String getName() {
         return mName;
+    }
+
+    public Trip getTrip() {
+        return mTrip;
     }
 
     public Integer getDay() {

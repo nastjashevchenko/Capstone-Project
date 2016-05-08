@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,10 +30,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TripActivity extends AppCompatActivity {
+public class TripActivity extends AppCompatActivity
+        implements PoiAdapter.OnRecyclerItemClickListener, EditPoiDialog.EditPoiDialogListener{
 
     private Trip mTrip;
     private List<Poi> mPois;
+    private RecyclerView.Adapter mAdapter;
 
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 100;
     private static final String LOG_TAG = TripActivity.class.getName();
@@ -62,48 +65,13 @@ public class TripActivity extends AppCompatActivity {
         mPois = mTrip.getPois();
         mPoiListView.setHasFixedSize(true);
         mPoiListView.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerView.Adapter mAdapter = new PoiAdapter(this, mPois);
+        mAdapter = new PoiAdapter(this, mPois);
         mPoiListView.setAdapter(mAdapter);
+    }
 
-        // TODO Refactor: Move dialog outside activity
-        /*mPoiListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_poi_edit, null);
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
-                alertDialogBuilder.setView(dialogView);
-                final Spinner spinner = (Spinner) dialogView.findViewById(R.id.days_spinner);
-                ArrayAdapter<CharSequence> adapter = new ArrayAdapter(view.getContext(),
-                        android.R.layout.simple_spinner_item, mTrip.getAllDates());
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(adapter);
-                spinner.setSelection(mPois.get(position).getDay());
-                final EditText note = (EditText) dialogView.findViewById(R.id.note);
-
-                alertDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        // TODO recreate list after day is changed
-                                        // because list is sorted by day
-                                        Poi poi = mPois.get(position);
-                                        poi.setDay(spinner.getSelectedItemPosition());
-                                        poi.setNote(note.getText().toString());
-                                        poi.save();
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-            }
-        });*/
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -156,5 +124,16 @@ public class TripActivity extends AppCompatActivity {
                 // The user canceled the operation.
             }
         }
+    }
+
+    @Override
+    public void onRecyclerItemClick(Poi poi) {
+        DialogFragment dialog = EditPoiDialog.newInstance(poi.getId());
+        dialog.show(getSupportFragmentManager(), "EditPoiDialog");
+    }
+
+    @Override
+    public void onSaveClick(DialogFragment dialog) {
+        // TODO Requery and update adapter
     }
 }
