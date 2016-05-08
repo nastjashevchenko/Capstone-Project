@@ -45,6 +45,11 @@ public class TripActivity extends AppCompatActivity
     @BindView(R.id.trip_dates) TextView mDatesView;
     @BindView(R.id.toolbar) Toolbar mToolbar;
 
+    private void updatePoiList() {
+        mPois = mTrip.getPois();
+        mPoiListView.swapAdapter(new PoiAdapter(this, mPois), false);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,11 +72,6 @@ public class TripActivity extends AppCompatActivity
         mPoiListView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new PoiAdapter(this, mPois);
         mPoiListView.setAdapter(mAdapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -114,12 +114,11 @@ public class TripActivity extends AppCompatActivity
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 Poi poi = new Poi(place.getId(), place.getName().toString(), mTrip);
                 poi.save();
-                Log.i(LOG_TAG, "Place: " + place.getName());
+                updatePoiList();
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Handle the error.
                 Log.i(LOG_TAG, status.getStatusMessage());
-
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
@@ -134,6 +133,6 @@ public class TripActivity extends AppCompatActivity
 
     @Override
     public void onSaveClick(DialogFragment dialog) {
-        // TODO Requery and update adapter
+        updatePoiList();
     }
 }

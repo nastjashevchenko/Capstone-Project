@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
-    private static List<ListItem> mItemList = new ArrayList<>();
+    private static List<ListItem> mItemList;
     private OnRecyclerItemClickListener mListener;
 
     private static final int TYPE_HEADER = 0;
@@ -48,6 +48,7 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
     }
 
     public PoiAdapter(Context context, List<Poi> poiList) {
+        mItemList = new ArrayList<>();
         mListener = (OnRecyclerItemClickListener) context;
         // Need to build list of recyclerview items, need to insert headers to list of places
         int lastDayNumber = -1;
@@ -68,7 +69,7 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        final ListItem item = mItemList.get(position);
+        ListItem item = mItemList.get(position);
         return item.isHeader ? TYPE_HEADER : TYPE_POI;
     }
 
