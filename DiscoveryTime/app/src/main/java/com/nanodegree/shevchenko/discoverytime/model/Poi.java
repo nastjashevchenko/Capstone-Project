@@ -21,7 +21,7 @@ public class Poi extends Model {
     @Column(name = "Name")
     private String mName;
 
-    @Column(name = "Trip")
+    @Column(name = "Trip", onDelete = Column.ForeignKeyAction.CASCADE)
     private Trip mTrip;
 
     @Column(name = "Note")

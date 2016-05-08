@@ -83,9 +83,15 @@ public class TripActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        // TODO Add delete, edit, map and share functions
+        // TODO Add edit, map and share functions
         if (id == R.id.action_add_place) {
             addPlace();
+            return true;
+        }
+        if (id == R.id.action_delete) {
+            // TODO add UNDO snackbar
+            mTrip.delete();
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -126,8 +132,8 @@ public class TripActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRecyclerItemClick(Poi poi) {
-        DialogFragment dialog = EditPoiDialog.newInstance(poi.getId());
+    public void onRecyclerItemClick(Long poiId) {
+        DialogFragment dialog = EditPoiDialog.newInstance(poiId);
         dialog.show(getSupportFragmentManager(), "EditPoiDialog");
     }
 

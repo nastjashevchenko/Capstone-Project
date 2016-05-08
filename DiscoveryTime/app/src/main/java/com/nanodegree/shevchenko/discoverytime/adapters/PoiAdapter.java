@@ -14,14 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
-    private static List<ListItem> mItemList;
+    private List<ListItem> mItemList;
     private OnRecyclerItemClickListener mListener;
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_POI = 1;
 
     public interface OnRecyclerItemClickListener {
-        void onRecyclerItemClick(Poi poi);
+        void onRecyclerItemClick(Long poiId);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -30,20 +30,22 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
         TextView title;
         TextView note;
         OnRecyclerItemClickListener mListener;
+        List<ListItem> mItems;
 
-        public ViewHolder(View poiItemView, OnRecyclerItemClickListener listener) {
+        public ViewHolder(View poiItemView, OnRecyclerItemClickListener listener, List<ListItem> items) {
             super(poiItemView);
             title = (TextView) poiItemView.findViewById(R.id.title);
             note = (TextView) poiItemView.findViewById(R.id.note);
+            mItems = items;
             poiItemView.setOnClickListener(this);
             mListener = listener;
         }
 
         @Override
         public void onClick(View view) {
-            ListItem item = mItemList.get(getAdapterPosition());
+            ListItem item = mItems.get(getAdapterPosition());
             if (item.isHeader) return;
-            mListener.onRecyclerItemClick(item.poi);
+            mListener.onRecyclerItemClick(item.poiId);
         }
     }
 
@@ -63,7 +65,7 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
                         : context.getResources().getString(R.string.day_number, dayNumber);
                 mItemList.add(new ListItem(dayStr, poi.getDateStr(), true, null));
             }
-            mItemList.add(new ListItem(poi.getName(), poi.getNote(), false, poi));
+            mItemList.add(new ListItem(poi.getName(), poi.getNote(), false, poi.getId()));
         }
     }
 
@@ -83,7 +85,7 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_poi, parent, false);
         }
-        return new ViewHolder(view, mListener);
+        return new ViewHolder(view, mListener, mItemList);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -106,13 +108,13 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
         String title;
         String note;
         // Save Poi object if it is not header
-        Poi poi;
+        Long poiId;
 
-        public ListItem(String title, String note, boolean isHeader, Poi poi) {
+        public ListItem(String title, String note, boolean isHeader, Long poiId) {
             this.isHeader = isHeader;
             this.title = title;
             this.note = note;
-            this.poi = poi;
+            this.poiId = poiId;
         }
     }
 }

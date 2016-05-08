@@ -25,6 +25,7 @@ public class PageFragment extends Fragment {
 
     private int mPage;
     private List<Trip> mTripList = new ArrayList<>();
+    TripAdapter tripAdapter;
 
     public static PageFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -50,7 +51,7 @@ public class PageFragment extends Fragment {
         if (mPage == 2) mTripList = Trip.getWishList();
         if (mPage == 3) mTripList = Trip.getPast();
 
-        TripAdapter tripAdapter = new TripAdapter(getContext(), mTripList);
+        tripAdapter = new TripAdapter(getContext(), mTripList);
         mTripListView.setAdapter(tripAdapter);
         mTripListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,5 +69,9 @@ public class PageFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // TODO update list onResume, trips can be added/deleted/changed
+        if (mPage == 1) mTripList = Trip.getUpcoming();
+        if (mPage == 2) mTripList = Trip.getWishList();
+        if (mPage == 3) mTripList = Trip.getPast();
+        mTripListView.setAdapter(new TripAdapter(getContext(), mTripList));
     }
 }
