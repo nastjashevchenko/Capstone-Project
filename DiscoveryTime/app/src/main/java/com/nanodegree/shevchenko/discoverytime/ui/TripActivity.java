@@ -88,6 +88,11 @@ public class TripActivity extends AppCompatActivity
             addPlace();
             return true;
         }
+        if (id == R.id.action_edit) {
+            DialogFragment dialog = EditTripDialog.newInstance(mTrip.getId());
+            dialog.show(getSupportFragmentManager(), "EditTripDialog");
+            return true;
+        }
         if (id == R.id.action_delete) {
             // TODO add UNDO snackbar
             mTrip.delete();
