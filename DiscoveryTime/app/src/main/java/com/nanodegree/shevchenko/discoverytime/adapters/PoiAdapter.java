@@ -16,6 +16,7 @@ import java.util.List;
 public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
     private List<ListItem> mItemList;
     private OnRecyclerItemClickListener mListener;
+    private Context mContext;
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_POI = 1;
@@ -24,34 +25,37 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
         void onRecyclerItemClick(Long poiId);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // For header title is day number or "Not planned yet" text, note is date (can be empty)
         // For poi item title is place name, note is note added bu user (can be empty)
         TextView title;
         TextView note;
         OnRecyclerItemClickListener mListener;
-        List<ListItem> mItems;
 
-        public ViewHolder(View poiItemView, OnRecyclerItemClickListener listener, List<ListItem> items) {
+        public ViewHolder(View poiItemView, OnRecyclerItemClickListener listener) {
             super(poiItemView);
             title = (TextView) poiItemView.findViewById(R.id.title);
             note = (TextView) poiItemView.findViewById(R.id.note);
-            mItems = items;
             poiItemView.setOnClickListener(this);
             mListener = listener;
         }
 
         @Override
         public void onClick(View view) {
-            ListItem item = mItems.get(getAdapterPosition());
+            ListItem item = mItemList.get(getLayoutPosition());
             if (item.isHeader) return;
             mListener.onRecyclerItemClick(item.poiId);
         }
     }
 
     public PoiAdapter(Context context, List<Poi> poiList) {
-        mItemList = new ArrayList<>();
+        mContext = context;
         mListener = (OnRecyclerItemClickListener) context;
+        setUpdatedList(poiList);
+    }
+
+    public void setUpdatedList(List<Poi> poiList) {
+        mItemList = new ArrayList<>();
         // Need to build list of recyclerview items, need to insert headers to list of places
         int lastDayNumber = -1;
         for (int i = 0; i < poiList.size(); i++) {
@@ -61,8 +65,8 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
                 // Insert new header view and update section data.
                 lastDayNumber = dayNumber;
                 String dayStr = (dayNumber == 0)
-                        ? context.getResources().getString(R.string.not_planned_header)
-                        : context.getResources().getString(R.string.day_number, dayNumber);
+                        ? mContext.getResources().getString(R.string.not_planned_header)
+                        : mContext.getResources().getString(R.string.day_number, dayNumber);
                 mItemList.add(new ListItem(dayStr, poi.getDateStr(), true, null));
             }
             mItemList.add(new ListItem(poi.getName(), poi.getNote(), false, poi.getId()));
@@ -85,7 +89,7 @@ public class PoiAdapter extends RecyclerView.Adapter<PoiAdapter.ViewHolder> {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_poi, parent, false);
         }
-        return new ViewHolder(view, mListener, mItemList);
+        return new ViewHolder(view, mListener);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

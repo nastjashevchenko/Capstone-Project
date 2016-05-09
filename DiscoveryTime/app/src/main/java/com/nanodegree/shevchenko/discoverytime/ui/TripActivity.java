@@ -36,7 +36,7 @@ public class TripActivity extends AppCompatActivity
 
     private Trip mTrip;
     private List<Poi> mPois;
-    private RecyclerView.Adapter mAdapter;
+    private PoiAdapter mAdapter;
 
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 100;
     private static final String LOG_TAG = TripActivity.class.getName();
@@ -48,7 +48,8 @@ public class TripActivity extends AppCompatActivity
 
     private void updatePoiList() {
         mPois = mTrip.getPois();
-        mPoiListView.swapAdapter(new PoiAdapter(this, mPois), false);
+        mAdapter.setUpdatedList(mPois);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
