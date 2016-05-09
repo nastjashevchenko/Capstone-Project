@@ -75,6 +75,6 @@ public class Poi extends Model {
     }
 
     public String getDateStr() {
-        return (mDay == 0) ? "" : Util.getDateByDayNumber(mTrip.getStartDate(), mDay);
+        return (mDay == 0) ? "" : Util.getDateByDayNumber(mTrip.getStartDate(), mDay - 1);
     }
 }

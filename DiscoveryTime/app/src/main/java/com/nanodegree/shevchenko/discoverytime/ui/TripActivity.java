@@ -31,7 +31,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TripActivity extends AppCompatActivity
-        implements PoiAdapter.OnRecyclerItemClickListener, EditPoiDialog.EditPoiDialogListener{
+        implements PoiAdapter.OnRecyclerItemClickListener, EditPoiDialog.EditPoiDialogListener,
+                   EditTripDialog.EditTripDialogListener {
 
     private Trip mTrip;
     private List<Poi> mPois;
@@ -144,6 +145,17 @@ public class TripActivity extends AppCompatActivity
 
     @Override
     public void onSaveClick(DialogFragment dialog) {
+        updatePoiList();
+    }
+
+    @Override
+    public void onTitleChanged(DialogFragment dialog) {
+        mCollapsingToolbar.setTitle(mTrip.getTitle());
+    }
+
+    @Override
+    public void onDatesChanged(DialogFragment dialog) {
+        mDatesView.setText(mTrip.getDates());
         updatePoiList();
     }
 }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.nanodegree.shevchenko.discoverytime.R;
 import com.nanodegree.shevchenko.discoverytime.Util;
+import com.nanodegree.shevchenko.discoverytime.model.Poi;
 import com.nanodegree.shevchenko.discoverytime.model.Trip;
 
 import java.util.Calendar;
@@ -29,6 +31,8 @@ import java.util.Calendar;
 public class EditTripDialog  extends DialogFragment
         implements DatePickerDialog.OnDateSetListener, View.OnClickListener{
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 100;
+
+    EditTripDialogListener mListener;
 
     private boolean newTrip;
     private boolean start;
@@ -50,6 +54,18 @@ public class EditTripDialog  extends DialogFragment
 
     public static EditTripDialog newInstance() {
         return new EditTripDialog();
+    }
+
+    public interface EditTripDialogListener {
+        void onTitleChanged(DialogFragment dialog);
+        void onDatesChanged(DialogFragment dialog);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof EditTripDialogListener)
+            mListener = (EditTripDialogListener) activity;
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -165,7 +181,23 @@ public class EditTripDialog  extends DialogFragment
             showError(getResources().getString(R.string.start_after_end));
             return false;
         }
-
+        // Update UI and places if some fields were changed
+        String newTitle = mTitle.getText().toString();
+        if (!newTrip && !mTrip.getTitle().equals(newTitle)) {
+            mListener.onTitleChanged(EditTripDialog.this);
+        }
+        if (!newTrip && (startDate != mTrip.getStartDate() || endDate != mTrip.getEndDate())) {
+            long newDuration = (endDate - startDate) / (24 * 60 * 60 * 1000) + 1;
+            // If duration became shorter, some places could have days out of new range
+            // This places will be not assigned to any day in this case
+            for (Poi poi : mTrip.getPois()) {
+                if (poi.getDay() > newDuration) {
+                    poi.setDay(0);
+                    poi.save();
+                }
+            }
+            mListener.onDatesChanged(EditTripDialog.this);
+        }
         // Save new trip to DB
         mTrip.setTitle(mTitle.getText().toString());
         mTrip.setStartDate(startDate);
