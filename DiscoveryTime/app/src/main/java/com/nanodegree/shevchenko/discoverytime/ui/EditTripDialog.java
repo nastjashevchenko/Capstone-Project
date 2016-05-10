@@ -181,18 +181,16 @@ public class EditTripDialog  extends DialogFragment
             return false;
         }
         // Update UI and places if some fields were changed
-        //String newTitle = mTitle.getText().toString();
-        boolean titleChanged = (!mTrip.getTitle().equals(mTitle.getText().toString()));
-        boolean datesChanged = (startDate != mTrip.getStartDate() || endDate != mTrip.getEndDate());
+        boolean titleChanged = (!newTrip && !mTrip.getTitle().equals(mTitle.getText().toString()));
+        boolean datesChanged = !newTrip &&
+                (startDate != mTrip.getStartDate() || endDate != mTrip.getEndDate());
         mTrip.setTitle(mTitle.getText().toString());
         mTrip.setStartDate(startDate);
         mTrip.setEndDate(endDate);
         mTrip.save();
 
-        if (!newTrip && titleChanged) {
-            mListener.onTitleChanged(EditTripDialog.this);
-        }
-        if (!newTrip && datesChanged) {
+        if (titleChanged) mListener.onTitleChanged(EditTripDialog.this);
+        if (datesChanged) {
             long newDuration = (endDate - startDate) / (24 * 60 * 60 * 1000) + 1;
             // If duration became shorter, some places could have days out of new range
             // This places will be not assigned to any day in this case
