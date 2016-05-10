@@ -155,7 +155,7 @@ public class TripActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSaveClick(DialogFragment dialog) {
+    public void onSaveClick(DialogFragment dialog, Long poiId) {
         updatePoiList();
     }
 

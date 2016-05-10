@@ -28,7 +28,7 @@ public class EditPoiDialog extends DialogFragment {
     }
 
     public interface EditPoiDialogListener {
-        void onSaveClick(DialogFragment dialog);
+        void onSaveClick(DialogFragment dialog, Long poiId);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class EditPoiDialog extends DialogFragment {
                                     poi.setDay(spinner.getSelectedItemPosition());
                                     poi.setNote(note.getText().toString());
                                     poi.save();
-                                    mListener.onSaveClick(EditPoiDialog.this);
+                                    mListener.onSaveClick(EditPoiDialog.this, poi.getId());
                                 }
                             }
                         })
