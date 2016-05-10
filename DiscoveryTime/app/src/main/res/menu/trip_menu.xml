@@ -4,23 +4,26 @@
     <!--TODO Add share button-->
     <!--TODO change icons to material design icons-->
     <item
+        android:id="@+id/action_show_on_map"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_map_white_24dp"
+        android:title="@string/show_on_map" />
+
+    <item
         android:id="@+id/action_add_place"
         app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/add_place"
-        android:orderInCategory="1" />
+        android:icon="@drawable/ic_add_location_white_24dp"
+        android:title="@string/add_place" />
 
     <item
         android:id="@+id/action_edit"
-        android:orderInCategory="2"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/ic_mode_edit_white_24dp"
         android:title="@string/edit_trip"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_delete"
-        android:orderInCategory="3"
-        android:icon="@android:drawable/ic_menu_delete"
+        android:icon="@drawable/ic_delete_white_24dp"
         android:title="@string/delete_trip"
         app:showAsAction="ifRoom" />
 </menu>

@@ -85,7 +85,10 @@ public class TripActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        // TODO Add edit, map and share functions
+        // TODO Add map and share functions
+        if (id == R.id.action_show_on_map) {
+            return true;
+        }
         if (id == R.id.action_add_place) {
             addPlace();
             return true;
