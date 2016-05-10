@@ -70,6 +70,7 @@ public class TripActivity extends AppCompatActivity
 
         // TODO Use cursor adapter
         mPois = mTrip.getPois();
+
         mPoiListView.setHasFixedSize(true);
         mPoiListView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new PoiAdapter(this, mPois);
@@ -85,8 +86,9 @@ public class TripActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        // TODO Add map and share functions
-        if (id == R.id.action_show_on_map) {
+        // TODO Add share function
+        // TODO if mPois list is empty - hide this button
+        if (id == R.id.action_show_on_map && (mPois != null && mPois.size() > 0)) {
             Intent mapActivity = new Intent(this, MapActivity.class);
             mapActivity.putExtra(Trip.EXTRA_ID_NAME, mTrip.getId());
             startActivity(mapActivity);
