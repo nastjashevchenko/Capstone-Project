@@ -87,6 +87,9 @@ public class TripActivity extends AppCompatActivity
         int id = item.getItemId();
         // TODO Add map and share functions
         if (id == R.id.action_show_on_map) {
+            Intent mapActivity = new Intent(this, MapActivity.class);
+            mapActivity.putExtra(Trip.EXTRA_ID_NAME, mTrip.getId());
+            startActivity(mapActivity);
             return true;
         }
         if (id == R.id.action_add_place) {
@@ -129,6 +132,8 @@ public class TripActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 Poi poi = new Poi(place.getId(), place.getName().toString(), mTrip);
+                poi.setLat(place.getLatLng().latitude);
+                poi.setLng(place.getLatLng().longitude);
                 poi.save();
                 updatePoiList();
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {

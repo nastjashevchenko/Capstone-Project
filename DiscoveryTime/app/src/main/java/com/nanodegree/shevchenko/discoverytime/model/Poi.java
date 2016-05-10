@@ -30,6 +30,12 @@ public class Poi extends Model {
     @Column(name = "Day")
     private Integer mDay;
 
+    @Column(name = "Lat")
+    private double mLat;
+
+    @Column(name = "Lng")
+    private double mLng;
+
     public Poi() {
         super();
     }
@@ -72,6 +78,22 @@ public class Poi extends Model {
 
     public void setNote(String note) {
         this.mNote = note;
+    }
+
+    public double getLat() {
+        return mLat;
+    }
+
+    public void setLat(double lat) {
+        this.mLat = lat;
+    }
+
+    public double getLng() {
+        return mLng;
+    }
+
+    public void setLng(double lng) {
+        this.mLng = lng;
     }
 
     public String getDateStr() {

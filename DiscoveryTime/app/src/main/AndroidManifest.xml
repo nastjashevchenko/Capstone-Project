@@ -28,14 +28,22 @@
             android:value="1" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.nanodegree.shevchenko.discoverytime.model.Trip" />
+            android:value="com.nanodegree.shevchenko.discoverytime.model.Trip,
+                           com.nanodegree.shevchenko.discoverytime.model.Poi" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_API_KEY" />
 
-
-        <activity android:name=".ui.AddTripActivity" />
+        <activity android:name=".ui.TripActivity" />
         <activity
-            android:name=".ui.TripActivity"
-            android:label="@string/title_activity_trip"
-            android:theme="@style/AppTheme" />
+            android:name=".ui.MapActivity"
+            android:label="@string/title_activity_map"
+            android:parentActivityName=".ui.TripActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nanodegree.shevchenko.discoverytime.ui.TripActivity" />
+        </activity>
     </application>
 
 </manifest>
