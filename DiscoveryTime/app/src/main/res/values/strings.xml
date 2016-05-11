@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Discovery Time</string>
     <string name="action_settings">Settings</string>
+    <string name="google_app_id">com.nanodegree.shevchenko.discoverytime</string>
 
     <!-- Tab names for trip lists -->
     <string name="upcoming">Upcoming</string>

@@ -56,6 +56,7 @@ public class PhotoTask extends AsyncTask<Double, Void, Bitmap> {
                     .addQueryParameter("from", "0")
                     .addQueryParameter("to", "1")
                     .addQueryParameter("size", "medium")
+                    // TODO search boundaries should depend on place size (i.e. country, museum)
                     .addQueryParameter("minx", String.valueOf(Math.floor(params[1])))
                     .addQueryParameter("miny", String.valueOf(Math.floor(params[0])))
                     .addQueryParameter("maxx", String.valueOf(Math.ceil(params[1])))

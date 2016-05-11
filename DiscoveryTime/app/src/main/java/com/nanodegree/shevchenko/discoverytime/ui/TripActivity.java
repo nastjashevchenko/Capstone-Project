@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -70,7 +71,7 @@ public class TripActivity extends AppCompatActivity
         mCollapsingToolbar.setTitle(mTrip.getTitle());
         mCollapsingToolbar.setExpandedTitleColor(Color.WHITE);
         mCollapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
-        mCollapsingToolbar.setExpandedTitleGravity(Gravity.BOTTOM|Gravity.CENTER);
+        mCollapsingToolbar.setExpandedTitleGravity(Gravity.BOTTOM | Gravity.CENTER);
         mDatesView.setText(mTrip.getDates());
 
         // TODO Use cursor adapter
@@ -120,10 +121,6 @@ public class TripActivity extends AppCompatActivity
             startActivity(mapActivity);
             return true;
         }
-        if (id == R.id.action_add_place) {
-            addPlace();
-            return true;
-        }
         if (id == R.id.action_edit) {
             DialogFragment dialog = EditTripDialog.newInstance(mTrip.getId());
             dialog.show(getSupportFragmentManager(), "EditTripDialog");
@@ -138,7 +135,7 @@ public class TripActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void addPlace() {
+    public void addPlace(View view) {
         try {
             Intent intent =
                     new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
