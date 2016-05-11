@@ -30,6 +30,12 @@ public class Trip extends Model implements Parcelable {
     @Column(name = "EndDate")
     private long mEndDate;
 
+    @Column(name = "Lat")
+    private double mLat;
+
+    @Column(name = "Lng")
+    private double mLng;
+
     public Trip() {
         super();
     };
@@ -66,6 +72,22 @@ public class Trip extends Model implements Parcelable {
 
     public long getEndDate() {
         return mEndDate;
+    }
+
+    public double getLat() {
+        return mLat;
+    }
+
+    public void setLat(double lat) {
+        this.mLat = lat;
+    }
+
+    public double getLng() {
+        return mLng;
+    }
+
+    public void setLng(double lng) {
+        this.mLng = lng;
     }
 
     public String getStartDateStr() {

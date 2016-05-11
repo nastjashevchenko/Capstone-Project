@@ -233,6 +233,8 @@ public class EditTripDialog  extends DialogFragment
             if (resultCode == Activity.RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(getContext(), data);
                 mTrip.setPlaceId(place.getId());
+                mTrip.setLat(place.getLatLng().latitude);
+                mTrip.setLng(place.getLatLng().longitude);
                 if (mTitle.getText().length() <= 0) mTitle.setText(place.getName().toString());
             }
         }

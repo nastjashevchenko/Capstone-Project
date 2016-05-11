@@ -1,6 +1,7 @@
 package com.nanodegree.shevchenko.discoverytime.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -20,6 +22,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.nanodegree.shevchenko.discoverytime.PhotoTask;
 import com.nanodegree.shevchenko.discoverytime.R;
 import com.nanodegree.shevchenko.discoverytime.adapters.PoiAdapter;
 import com.nanodegree.shevchenko.discoverytime.model.Poi;
@@ -45,7 +48,9 @@ public class TripActivity extends AppCompatActivity
     @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
     @BindView(R.id.trip_dates) TextView mDatesView;
     @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.trip_image) ImageView mImageView;
 
+    // TODO Need to update poi list on resume when poi was changed from map activity
     private void updatePoiList() {
         mPois = mTrip.getPois();
         mAdapter.setUpdatedList(mPois);
@@ -75,6 +80,27 @@ public class TripActivity extends AppCompatActivity
         mPoiListView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new PoiAdapter(this, mPois);
         mPoiListView.setAdapter(mAdapter);
+
+        placePhotosTask();
+    }
+
+    private void placePhotosTask() {
+        new PhotoTask() {
+            @Override
+            protected void onPreExecute() {
+                // Display a temporary image to show while bitmap is loading.
+                mImageView.setImageResource(R.drawable.test_image);
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap photo) {
+                if (photo != null) {
+                    // Photo has been loaded, display it.
+                    mImageView.setImageBitmap(photo);
+                }
+            }
+            // TODO Add lat, lng as params and use photos for places list as well
+        }.execute(mTrip.getLat(), mTrip.getLng());
     }
 
     @Override
