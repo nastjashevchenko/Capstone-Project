@@ -56,10 +56,10 @@ public class PhotoTask extends AsyncTask<Double, Void, Bitmap> {
                     .addQueryParameter("from", "0")
                     .addQueryParameter("to", "1")
                     .addQueryParameter("size", "medium")
-                    .addQueryParameter("minx", String.valueOf(Math.floor(params[1]) - 1))
-                    .addQueryParameter("miny", String.valueOf(Math.floor(params[0]) - 1))
-                    .addQueryParameter("maxx", String.valueOf(Math.ceil(params[1]) + 1))
-                    .addQueryParameter("maxy", String.valueOf(Math.ceil(params[0]) + 1))
+                    .addQueryParameter("minx", String.valueOf(Math.floor(params[1])))
+                    .addQueryParameter("miny", String.valueOf(Math.floor(params[0])))
+                    .addQueryParameter("maxx", String.valueOf(Math.ceil(params[1])))
+                    .addQueryParameter("maxy", String.valueOf(Math.ceil(params[0])))
                     .build();
 
             Request request = new Request.Builder()
