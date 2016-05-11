@@ -45,6 +45,9 @@ public class EditPoiDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        String notPlanned = getString(R.string.not_planned_header);
+        String dayDateTmpl = getString(R.string.day_and_date_tmpl);
+
         final Long poiId = getArguments().getLong(Poi.POI_ID);
         final Poi poi = Poi.getById(poiId);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -57,7 +60,8 @@ public class EditPoiDialog extends DialogFragment {
         final EditText note = (EditText) dialogView.findViewById(R.id.note);
 
         ArrayAdapter adapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_spinner_item, poi.getTrip().getAllDates());
+                android.R.layout.simple_spinner_item, poi.getTrip()
+                .getAllDates(notPlanned, dayDateTmpl));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(poi.getDay());

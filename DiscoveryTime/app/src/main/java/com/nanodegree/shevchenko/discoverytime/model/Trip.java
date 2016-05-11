@@ -11,6 +11,8 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.nanodegree.shevchenko.discoverytime.Util;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Table(name = "Trip")
@@ -176,7 +178,19 @@ public class Trip extends Model implements Parcelable {
         }
     };
 
-    public List<String> getAllDates() {
-        return Util.getDaysBetweenDates(mStartDate, mEndDate);
+    public List<String> getAllDates(String notPlanned, String dayDateTmpl) {
+        List<String> dates = new ArrayList<>();
+        dates.add(notPlanned);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(mStartDate);
+        int i = 1;
+
+        while (calendar.getTimeInMillis() < mEndDate) {
+            String result = Util.longDateToString(calendar.getTimeInMillis());
+            dates.add(String.format(dayDateTmpl, i, result));
+            calendar.add(Calendar.DATE, 1);
+            i++;
+        }
+        return dates;
     }
 }

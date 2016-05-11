@@ -208,23 +208,22 @@ public class EditTripDialog  extends DialogFragment
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.destination) {
-            addTripDest();
+            try {
+                addTripDest();
+            } catch (GooglePlayServicesNotAvailableException| GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+            }
         } else {
             showDatePickerDialog(v);
         }
     }
 
-    public void addTripDest() {
-        try {
-            Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .build(getActivity());
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
-        }
+    public void addTripDest() throws GooglePlayServicesNotAvailableException,
+            GooglePlayServicesRepairableException {
+        Intent intent =
+                new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                        .build(getActivity());
+        startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
     }
 
     @Override

@@ -100,7 +100,6 @@ public class TripActivity extends AppCompatActivity
                     mImageView.setImageBitmap(photo);
                 }
             }
-            // TODO Add lat, lng as params and use photos for places list as well
         }.execute(mTrip.getLat(), mTrip.getLng());
     }
 
@@ -138,14 +137,10 @@ public class TripActivity extends AppCompatActivity
         try {
             Intent intent =
                     new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            // TODO Create places filter, I don't need all types
-                            //.setFilter(typeFilter)
                             .build(this);
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
         }
     }
 
@@ -162,10 +157,7 @@ public class TripActivity extends AppCompatActivity
                 updatePoiList();
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
-                // TODO: Handle the error.
                 Log.i(LOG_TAG, status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
             }
         }
     }
