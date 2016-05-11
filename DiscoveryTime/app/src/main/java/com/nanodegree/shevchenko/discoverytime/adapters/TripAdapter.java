@@ -48,7 +48,7 @@ public class TripAdapter extends BaseAdapter {
         Trip trip = tripList.get(position);
 
         titleView.setText(trip.getTitle());
-        datesView.setText(trip.getDates());
+        datesView.setText(trip.getDates(context.getResources().getString(R.string.from_to_tmpl)));
 
         return convertView;
     }

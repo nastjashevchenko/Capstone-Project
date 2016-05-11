@@ -72,7 +72,7 @@ public class TripActivity extends AppCompatActivity
         mCollapsingToolbar.setExpandedTitleColor(Color.WHITE);
         mCollapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
         mCollapsingToolbar.setExpandedTitleGravity(Gravity.BOTTOM | Gravity.CENTER);
-        mDatesView.setText(mTrip.getDates());
+        mDatesView.setText(mTrip.getDates(getResources().getString(R.string.from_to_tmpl)));
 
         // TODO Use cursor adapter
         mPois = mTrip.getPois();
@@ -113,7 +113,6 @@ public class TripActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        // TODO Add share function
         // TODO if mPois list is empty - hide this button
         if (id == R.id.action_show_on_map && (mPois != null && mPois.size() > 0)) {
             Intent mapActivity = new Intent(this, MapActivity.class);
@@ -189,7 +188,7 @@ public class TripActivity extends AppCompatActivity
 
     @Override
     public void onDatesChanged(DialogFragment dialog) {
-        mDatesView.setText(mTrip.getDates());
+        mDatesView.setText(mTrip.getDates(getResources().getString(R.string.from_to_tmpl)));
         updatePoiList();
     }
 }

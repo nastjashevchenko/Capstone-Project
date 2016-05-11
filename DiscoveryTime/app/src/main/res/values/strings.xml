@@ -35,6 +35,6 @@
     <string name="day_number">Day %d</string>
 
     <string name="title_activity_map">MapActivity</string>
-
     <string name="day_and_date_tmpl" formatted="false">Day %d - %s</string>
+    <string name="from_to_tmpl" formatted="false">%s - %s</string>
 </resources>
