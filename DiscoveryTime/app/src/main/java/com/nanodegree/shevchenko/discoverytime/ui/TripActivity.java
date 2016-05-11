@@ -85,7 +85,7 @@ public class TripActivity extends AppCompatActivity
     }
 
     private void placePhotosTask() {
-        new PhotoTask() {
+        new PhotoTask(getApplicationContext(), mTrip.getPlaceId()) {
             @Override
             protected void onPreExecute() {
                 // Display a temporary image to show while bitmap is loading.
