@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nanodegree.shevchenko.discoverytime.R;
 import com.nanodegree.shevchenko.discoverytime.adapters.TripAdapter;
@@ -22,6 +23,7 @@ import butterknife.ButterKnife;
 public class PageFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
     @BindView(R.id.trip_list) ListView mTripListView;
+    @BindView(R.id.empty) TextView mEmptyListView;
 
     private int mPage;
     private List<Trip> mTripList = new ArrayList<>();
@@ -62,6 +64,7 @@ public class PageFragment extends Fragment {
                 startActivity(tripActivity);
             }
         });
+        mTripListView.setEmptyView(mEmptyListView);
         return view;
     }
 
