@@ -88,18 +88,19 @@ public class TripActivity extends AppCompatActivity
         mDatesView.setText(mTrip.getDates(getResources().getString(R.string.from_to_tmpl)));
 
         // TODO Use cursor adapter
-        mPois = mTrip.getPois();
-        mEmptyListView.setVisibility(mPois.size() > 0 ? View.GONE : View.VISIBLE);
+        mTripPlaces = mTrip.getPois();
+        mEmptyListView.setVisibility(mTripPlaces.size() > 0 ? View.GONE : View.VISIBLE);
         mPoiListView.setHasFixedSize(true);
         mPoiListView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new PoiAdapter(this, mPois);
+        mAdapter = new PoiAdapter(this, mTripPlaces);
         mPoiListView.setAdapter(mAdapter);
 
         placePhotosTask();
     }
 
     private void placePhotosTask() {
-        new PhotoTask(getApplicationContext(), mGoogleApiClient, mTrip.getPlaceId()) {
+        new PhotoTask(getApplicationContext(), mGoogleApiClient, mTrip.getPlaceId(),
+                mImageView.getWidth(), mImageView.getHeight()) {
             @Override
             protected void onPreExecute() {
                 // Display a temporary image to show while bitmap is loading.

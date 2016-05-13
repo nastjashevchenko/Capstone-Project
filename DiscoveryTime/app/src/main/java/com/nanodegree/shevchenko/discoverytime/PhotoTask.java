@@ -32,11 +32,16 @@ public class PhotoTask extends AsyncTask<Double, Void, Bitmap> {
     private Context mContext;
     private String mPlaceId;
     private GoogleApiClient mGoogleApiClient;
+    private int mWidth;
+    private int mHeight;
 
-    public PhotoTask(Context c, GoogleApiClient apiClient, String placeId) {
+    public PhotoTask(Context c, GoogleApiClient apiClient,
+                     String placeId, int width, int height) {
         mContext = c;
         mGoogleApiClient = apiClient;
         mPlaceId = placeId;
+        mWidth = width;
+        mHeight = height;
     }
 
     private void saveImage(Bitmap image, File file) {
@@ -87,8 +92,7 @@ public class PhotoTask extends AsyncTask<Double, Void, Bitmap> {
             PlacePhotoMetadataBuffer photoMetadataBuffer = result.getPhotoMetadata();
             if (photoMetadataBuffer.getCount() > 0 && !isCancelled()) {
                 PlacePhotoMetadata photo = photoMetadataBuffer.get(0);
-                // TODO width, height
-                image  = photo.getScaledPhoto(mGoogleApiClient, 300, 300).await()
+                image  = photo.getScaledPhoto(mGoogleApiClient, mWidth, mHeight).await()
                         .getBitmap();
             }
             photoMetadataBuffer.release();
