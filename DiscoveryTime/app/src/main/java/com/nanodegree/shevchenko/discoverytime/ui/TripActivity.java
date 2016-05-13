@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +19,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.nanodegree.shevchenko.discoverytime.PhotoTask;
 import com.nanodegree.shevchenko.discoverytime.R;
@@ -36,7 +40,7 @@ import butterknife.ButterKnife;
 
 public class TripActivity extends AppCompatActivity
         implements PoiAdapter.OnRecyclerItemClickListener, EditPoiDialog.EditPoiDialogListener,
-                   EditTripDialog.EditTripDialogListener {
+                   EditTripDialog.EditTripDialogListener, GoogleApiClient.OnConnectionFailedListener {
 
     private Trip mTrip;
     private List<Poi> mPois;
@@ -44,6 +48,7 @@ public class TripActivity extends AppCompatActivity
 
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 100;
     private static final String LOG_TAG = TripActivity.class.getName();
+    GoogleApiClient mGoogleApiClient;
 
     @BindView(R.id.poi_list) RecyclerView mPoiListView;
     @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
@@ -68,6 +73,12 @@ public class TripActivity extends AppCompatActivity
 
         setSupportActionBar(mToolbar);
 
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, this)
+                .build();
+
         // TODO Query by id for now. Change when get to final data model
         mTrip = Trip.getById(getIntent().getLongExtra(Trip.EXTRA_ID_NAME, 0L));
         mCollapsingToolbar.setTitle(mTrip.getTitle());
@@ -88,7 +99,7 @@ public class TripActivity extends AppCompatActivity
     }
 
     private void placePhotosTask() {
-        new PhotoTask(getApplicationContext(), mTrip.getPlaceId()) {
+        new PhotoTask(getApplicationContext(), mGoogleApiClient, mTrip.getPlaceId()) {
             @Override
             protected void onPreExecute() {
                 // Display a temporary image to show while bitmap is loading.
@@ -184,5 +195,10 @@ public class TripActivity extends AppCompatActivity
     public void onDatesChanged(DialogFragment dialog) {
         mDatesView.setText(mTrip.getDates(getResources().getString(R.string.from_to_tmpl)));
         updatePoiList();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
