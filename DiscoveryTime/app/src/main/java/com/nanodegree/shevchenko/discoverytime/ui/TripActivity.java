@@ -50,10 +50,12 @@ public class TripActivity extends AppCompatActivity
     @BindView(R.id.trip_dates) TextView mDatesView;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.trip_image) ImageView mImageView;
+    @BindView(R.id.empty) TextView mEmptyListView;
 
     // TODO Need to update poi list on resume when poi was changed from map activity
     private void updatePoiList() {
         mPois = mTrip.getPois();
+        mEmptyListView.setVisibility(mPois.size() > 0 ? View.GONE : View.VISIBLE);
         mAdapter.setUpdatedList(mPois);
         mAdapter.notifyDataSetChanged();
     }
@@ -76,7 +78,7 @@ public class TripActivity extends AppCompatActivity
 
         // TODO Use cursor adapter
         mPois = mTrip.getPois();
-
+        mEmptyListView.setVisibility(mPois.size() > 0 ? View.GONE : View.VISIBLE);
         mPoiListView.setHasFixedSize(true);
         mPoiListView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new PoiAdapter(this, mPois);
