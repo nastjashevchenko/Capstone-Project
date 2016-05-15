@@ -1,6 +1,7 @@
 package com.nanodegree.shevchenko.discoverytime.ui;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -49,9 +50,14 @@ public class PageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         ButterKnife.bind(this, view);
 
-        if (mPage == 1) mTripList = Trip.getUpcoming();
-        if (mPage == 2) mTripList = Trip.getWishList();
-        if (mPage == 3) mTripList = Trip.getPast();
+        Cursor c = Trip.getByType(mPage, getContext().getContentResolver());
+        mTripList = new ArrayList<>();
+        // TODO temp, before cursor adapter
+        if (c != null) {
+            while (c.moveToNext()) {
+                mTripList.add(new Trip(c));
+            }
+        }
 
         tripAdapter = new TripAdapter(getContext(), mTripList);
         mTripListView.setAdapter(tripAdapter);
@@ -59,8 +65,7 @@ public class PageFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent tripActivity = new Intent(getContext(), TripActivity.class);
-                //tripActivity.putExtra(Trip.EXTRA_NAME, mTripList.get(position));
-                tripActivity.putExtra(Trip.EXTRA_ID_NAME, mTripList.get(position).getId());
+                tripActivity.putExtra(Trip.EXTRA_NAME, mTripList.get(position));
                 startActivity(tripActivity);
             }
         });
@@ -72,9 +77,5 @@ public class PageFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // TODO update list onResume, trips can be added/deleted/changed
-        if (mPage == 1) mTripList = Trip.getUpcoming();
-        if (mPage == 2) mTripList = Trip.getWishList();
-        if (mPage == 3) mTripList = Trip.getPast();
-        mTripListView.setAdapter(new TripAdapter(getContext(), mTripList));
     }
 }

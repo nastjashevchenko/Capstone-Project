@@ -29,39 +29,39 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.nanodegree.shevchenko.discoverytime.PhotoTask;
 import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.adapters.PoiAdapter;
-import com.nanodegree.shevchenko.discoverytime.model.Poi;
+import com.nanodegree.shevchenko.discoverytime.adapters.PlaceAdapter;
 import com.nanodegree.shevchenko.discoverytime.model.Trip;
+import com.nanodegree.shevchenko.discoverytime.model.TripPlace;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TripActivity extends AppCompatActivity
-        implements PoiAdapter.OnRecyclerItemClickListener, EditPoiDialog.EditPoiDialogListener,
+        implements PlaceAdapter.OnRecyclerItemClickListener, EditPlaceDialog.EditPlaceDialogListener,
                    EditTripDialog.EditTripDialogListener, GoogleApiClient.OnConnectionFailedListener {
 
     private Trip mTrip;
-    private List<Poi> mPois;
-    private PoiAdapter mAdapter;
+    private ArrayList<TripPlace> mTripPlaces;
+    private PlaceAdapter mAdapter;
 
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 100;
     private static final String LOG_TAG = TripActivity.class.getName();
     GoogleApiClient mGoogleApiClient;
 
-    @BindView(R.id.poi_list) RecyclerView mPoiListView;
+    @BindView(R.id.place_list) RecyclerView mPlaceListView;
     @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
     @BindView(R.id.trip_dates) TextView mDatesView;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.trip_image) ImageView mImageView;
     @BindView(R.id.empty) TextView mEmptyListView;
 
-    // TODO Need to update poi list on resume when poi was changed from map activity
-    private void updatePoiList() {
-        mPois = mTrip.getPois();
-        mEmptyListView.setVisibility(mPois.size() > 0 ? View.GONE : View.VISIBLE);
-        mAdapter.setUpdatedList(mPois);
+    // TODO Need to update place list on resume when place was changed from map activity
+    private void updatePlaceList() {
+        mTripPlaces = mTrip.getPlaces(getContentResolver());
+        mEmptyListView.setVisibility(mTripPlaces.size() > 0 ? View.GONE : View.VISIBLE);
+        mAdapter.setUpdatedList(mTripPlaces);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -79,8 +79,7 @@ public class TripActivity extends AppCompatActivity
                 .enableAutoManage(this, this)
                 .build();
 
-        // TODO Query by id for now. Change when get to final data model
-        mTrip = Trip.getById(getIntent().getLongExtra(Trip.EXTRA_ID_NAME, 0L));
+        mTrip = getIntent().getParcelableExtra(Trip.EXTRA_NAME);
         mCollapsingToolbar.setTitle(mTrip.getTitle());
         mCollapsingToolbar.setExpandedTitleColor(Color.WHITE);
         mCollapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
@@ -88,12 +87,12 @@ public class TripActivity extends AppCompatActivity
         mDatesView.setText(mTrip.getDates(getResources().getString(R.string.from_to_tmpl)));
 
         // TODO Use cursor adapter
-        mTripPlaces = mTrip.getPois();
+        mTripPlaces = mTrip.getPlaces(getContentResolver());
         mEmptyListView.setVisibility(mTripPlaces.size() > 0 ? View.GONE : View.VISIBLE);
-        mPoiListView.setHasFixedSize(true);
-        mPoiListView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new PoiAdapter(this, mTripPlaces);
-        mPoiListView.setAdapter(mAdapter);
+        mPlaceListView.setHasFixedSize(true);
+        mPlaceListView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new PlaceAdapter(this, mTripPlaces, mTrip.getStartDate());
+        mPlaceListView.setAdapter(mAdapter);
 
         placePhotosTask();
     }
@@ -126,21 +125,23 @@ public class TripActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        // TODO if mPois list is empty - hide this button
-        if (id == R.id.action_show_on_map && (mPois != null && mPois.size() > 0)) {
+        // TODO if mTripPlaces list is empty - hide this button
+        if (id == R.id.action_show_on_map && (mTripPlaces != null && mTripPlaces.size() > 0)) {
             Intent mapActivity = new Intent(this, MapActivity.class);
-            mapActivity.putExtra(Trip.EXTRA_ID_NAME, mTrip.getId());
+            mapActivity.putParcelableArrayListExtra(TripPlace.PLACES_LIST, mTripPlaces);
+            mapActivity.putExtra(Trip.START_DATE, mTrip.getStartDate());
+            mapActivity.putExtra(Trip.END_DATE, mTrip.getEndDate());
             startActivity(mapActivity);
             return true;
         }
         if (id == R.id.action_edit) {
-            DialogFragment dialog = EditTripDialog.newInstance(mTrip.getId());
+            DialogFragment dialog = EditTripDialog.newInstance(mTrip);
             dialog.show(getSupportFragmentManager(), "EditTripDialog");
             return true;
         }
         if (id == R.id.action_delete) {
             // TODO add UNDO snackbar
-            mTrip.delete();
+            mTrip.delete(getContentResolver());
             finish();
             return true;
         }
@@ -164,11 +165,12 @@ public class TripActivity extends AppCompatActivity
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                Poi poi = new Poi(place.getId(), place.getName().toString(), mTrip);
-                poi.setLat(place.getLatLng().latitude);
-                poi.setLng(place.getLatLng().longitude);
-                poi.save();
-                updatePoiList();
+                TripPlace tripPlace = new TripPlace(place.getId(), place.getName().toString(),
+                        mTrip.getId());
+                tripPlace.setLat(place.getLatLng().latitude);
+                tripPlace.setLng(place.getLatLng().longitude);
+                tripPlace.save(getContentResolver());
+                updatePlaceList();
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 Log.i(LOG_TAG, status.getStatusMessage());
@@ -177,14 +179,10 @@ public class TripActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRecyclerItemClick(Long poiId) {
-        DialogFragment dialog = EditPoiDialog.newInstance(poiId);
-        dialog.show(getSupportFragmentManager(), "EditPoiDialog");
-    }
-
-    @Override
-    public void onSaveClick(DialogFragment dialog, Long poiId) {
-        updatePoiList();
+    public void onRecyclerItemClick(TripPlace place) {
+        DialogFragment dialog = EditPlaceDialog.newInstance(place,
+                mTrip.getStartDate(), mTrip.getEndDate());
+        dialog.show(getSupportFragmentManager(), "EditPlaceDialog");
     }
 
     @Override
@@ -195,11 +193,16 @@ public class TripActivity extends AppCompatActivity
     @Override
     public void onDatesChanged(DialogFragment dialog) {
         mDatesView.setText(mTrip.getDates(getResources().getString(R.string.from_to_tmpl)));
-        updatePoiList();
+        updatePlaceList();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onSaveClick(DialogFragment dialog, TripPlace place) {
+        updatePlaceList();
     }
 }

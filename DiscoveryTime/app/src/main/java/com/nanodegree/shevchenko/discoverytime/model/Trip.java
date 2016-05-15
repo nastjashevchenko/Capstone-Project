@@ -1,48 +1,48 @@
 package com.nanodegree.shevchenko.discoverytime.model;
 
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.activeandroid.Cache;
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 import com.nanodegree.shevchenko.discoverytime.Util;
+import com.nanodegree.shevchenko.discoverytime.data.TripContract;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
-@Table(name = "Trip")
-public class Trip extends Model implements Parcelable {
+public class Trip implements Parcelable {
     public static final String EXTRA_NAME = "TRIP";
-    public static final String EXTRA_ID_NAME = "id";
+    public static final String START_DATE = "START_DATE";
+    public static final String END_DATE = "END_DATE";
 
-    @Column(name = "PlaceId")
+    private Long id;
     private String mPlaceId;
-
-    @Column(name = "Title")
     private String mTitle;
-
-    @Column(name = "StartDate")
-    private long mStartDate;
-
-    @Column(name = "EndDate")
-    private long mEndDate;
-
-    @Column(name = "Lat")
-    private double mLat;
-
-    @Column(name = "Lng")
-    private double mLng;
+    private Long mStartDate;
+    private Long mEndDate;
+    private Double mLat;
+    private Double mLng;
 
     public Trip() {
         super();
     };
 
+    public Trip(Cursor cursor) {
+        id = cursor.getLong(cursor.getColumnIndex(TripContract.TripColumns._ID));
+        mPlaceId = cursor.getString(cursor.getColumnIndex(TripContract.TripColumns.PLACE_ID));
+        mTitle = cursor.getString(cursor.getColumnIndex(TripContract.TripColumns.TITLE));
+        mStartDate = cursor.getLong(cursor.getColumnIndex(TripContract.TripColumns.START_DATE));
+        mEndDate = cursor.getLong(cursor.getColumnIndex(TripContract.TripColumns.END_DATE));
+        mLat = cursor.getDouble(cursor.getColumnIndex(TripContract.TripColumns.LAT));
+        mLng = cursor.getDouble(cursor.getColumnIndex(TripContract.TripColumns.LNG));
+    }
+
     // ---- Getters and Setters ----
+    public Long getId() {
+        return id;
+    }
 
     public void setTitle(String title) {
         this.mTitle = title;
@@ -68,15 +68,15 @@ public class Trip extends Model implements Parcelable {
         return mPlaceId;
     }
 
-    public long getStartDate() {
+    public Long getStartDate() {
         return mStartDate;
     }
 
-    public long getEndDate() {
+    public Long getEndDate() {
         return mEndDate;
     }
 
-    public double getLat() {
+    public Double getLat() {
         return mLat;
     }
 
@@ -84,7 +84,7 @@ public class Trip extends Model implements Parcelable {
         this.mLat = lat;
     }
 
-    public double getLng() {
+    public Double getLng() {
         return mLng;
     }
 
@@ -106,42 +106,89 @@ public class Trip extends Model implements Parcelable {
     }
 
     // ---- DB queries ----
-    public static Trip getById(Long id) {
-        return new Select()
-                .from(Trip.class)
-                .where(Cache.getTableInfo(Trip.class).getIdName() + " >= ?", id)
-                .executeSingle();
+
+    public static Cursor getByType(int type, ContentResolver resolver) {
+        // type == 1 -> upcoming
+        // type == 2 -> wishlist
+        // type == 3 -> past
+        String clause = null;
+        String[] args = null;
+        String order = null;
+        switch(type) {
+            case 1:
+                clause = TripContract.TripColumns.END_DATE + " >= ?";
+                args = new String[]{String.valueOf(System.currentTimeMillis())};
+                order = TripContract.TripColumns.START_DATE + " ASC";
+                break;
+            case 2:
+                clause = TripContract.TripColumns.START_DATE + " = ?";
+                args = new String[]{"0"};
+                break;
+            case 3:
+                clause = TripContract.TripColumns.END_DATE + " != ? AND "
+                        + TripContract.TripColumns.END_DATE + " < ?";
+                args = new String[]{"0", String.valueOf(System.currentTimeMillis())};
+                order = TripContract.TripColumns.START_DATE + " DESC";
+                break;
+            default:
+                break;
+        }
+        return resolver.query(
+                TripContract.TripColumns.CONTENT_URI,
+                null,
+                clause,
+                args,
+                order
+        );
     }
 
-    public static List<Trip> getUpcoming() {
-        return new Select()
-                .from(Trip.class)
-                .where("EndDate >= ?", System.currentTimeMillis())
-                .orderBy("StartDate ASC")
-                .execute();
+    private ContentValues putTripToValues() {
+        ContentValues values = new ContentValues();
+        values.put(TripContract.TripColumns.PLACE_ID, mPlaceId);
+        values.put(TripContract.TripColumns.TITLE, mTitle);
+        values.put(TripContract.TripColumns.START_DATE, mStartDate);
+        values.put(TripContract.TripColumns.END_DATE, mEndDate);
+        values.put(TripContract.TripColumns.LAT, mLat);
+        values.put(TripContract.TripColumns.LNG, mLng);
+        return values;
     }
 
-    public static List<Trip> getPast() {
-        return new Select()
-                .from(Trip.class)
-                .where("EndDate != ?", 0L)
-                .where("EndDate < ?", System.currentTimeMillis())
-                .orderBy("StartDate DESC")
-                .execute();
+    public void save(ContentResolver resolver) {
+        // if id != null ( != 0L) -> update, else insert
+        if (id != null) {
+            resolver.update(TripContract.TripColumns.CONTENT_URI,
+                    putTripToValues(),
+                    TripContract.TripColumns._ID + " = ?",
+                    new String[]{id.toString()});
+        } else {
+            resolver.insert(TripContract.TripColumns.CONTENT_URI,
+                    putTripToValues());
+        }
     }
 
-    public static List<Trip> getWishList() {
-        return new Select()
-                .from(Trip.class)
-                .where("StartDate = ?", 0L)
-                .execute();
+    public void delete(ContentResolver resolver) {
+        resolver.delete(TripContract.TripColumns.CONTENT_URI,
+                TripContract.TripColumns._ID + " = ?",
+                new String[]{id.toString()});
     }
 
-    public List<Poi> getPois() {
-        return new Select().from(Poi.class)
-                .where(Cache.getTableName(Poi.class) + "." + "Trip" + "=?", getId())
-                .orderBy("Day ASC")
-                .execute();
+    public ArrayList<TripPlace> getPlaces(ContentResolver resolver) {
+        // TODO make places load to trip activity with cursor loader
+        ArrayList<TripPlace> places = new ArrayList<>();
+        Cursor c = resolver.query(
+                TripContract.TripPlaceColumns.CONTENT_URI,
+                null,
+                TripContract.TripPlaceColumns.TRIP_ID  + " = ?",
+                new String[]{id.toString()},
+                TripContract.TripPlaceColumns.DAY + " ASC"
+        );
+        if (c != null) {
+            while (c.moveToNext()) {
+                places.add(new TripPlace(c));
+            }
+            c.close();
+        }
+        return places;
     }
 
     // ---- Parcelable methods ----
@@ -153,17 +200,23 @@ public class Trip extends Model implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
         dest.writeString(this.mPlaceId);
         dest.writeString(this.mTitle);
-        dest.writeLong(this.mStartDate);
-        dest.writeLong(this.mEndDate);
+        dest.writeValue(this.mStartDate);
+        dest.writeValue(this.mEndDate);
+        dest.writeValue(this.mLat);
+        dest.writeValue(this.mLng);
     }
 
     protected Trip(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.mPlaceId = in.readString();
         this.mTitle = in.readString();
-        this.mStartDate = in.readLong();
-        this.mEndDate = in.readLong();
+        this.mStartDate = (Long) in.readValue(Long.class.getClassLoader());
+        this.mEndDate = (Long) in.readValue(Long.class.getClassLoader());
+        this.mLat = (Double) in.readValue(Double.class.getClassLoader());
+        this.mLng = (Double) in.readValue(Double.class.getClassLoader());
     }
 
     public static final Creator<Trip> CREATOR = new Creator<Trip>() {
@@ -177,20 +230,4 @@ public class Trip extends Model implements Parcelable {
             return new Trip[size];
         }
     };
-
-    public List<String> getAllDates(String notPlanned, String dayDateTmpl) {
-        List<String> dates = new ArrayList<>();
-        dates.add(notPlanned);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(mStartDate);
-        int i = 1;
-
-        while (calendar.getTimeInMillis() < mEndDate) {
-            String result = Util.longDateToString(calendar.getTimeInMillis());
-            dates.add(String.format(dayDateTmpl, i, result));
-            calendar.add(Calendar.DATE, 1);
-            i++;
-        }
-        return dates;
-    }
 }
