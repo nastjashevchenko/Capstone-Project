@@ -107,41 +107,6 @@ public class Trip implements Parcelable {
 
     // ---- DB queries ----
 
-    public static Cursor getByType(int type, ContentResolver resolver) {
-        // type == 1 -> upcoming
-        // type == 2 -> wishlist
-        // type == 3 -> past
-        String clause = null;
-        String[] args = null;
-        String order = null;
-        switch(type) {
-            case 1:
-                clause = TripContract.TripColumns.END_DATE + " >= ?";
-                args = new String[]{String.valueOf(System.currentTimeMillis())};
-                order = TripContract.TripColumns.START_DATE + " ASC";
-                break;
-            case 2:
-                clause = TripContract.TripColumns.START_DATE + " = ?";
-                args = new String[]{"0"};
-                break;
-            case 3:
-                clause = TripContract.TripColumns.END_DATE + " != ? AND "
-                        + TripContract.TripColumns.END_DATE + " < ?";
-                args = new String[]{"0", String.valueOf(System.currentTimeMillis())};
-                order = TripContract.TripColumns.START_DATE + " DESC";
-                break;
-            default:
-                break;
-        }
-        return resolver.query(
-                TripContract.TripColumns.CONTENT_URI,
-                null,
-                clause,
-                args,
-                order
-        );
-    }
-
     private ContentValues putTripToValues() {
         ContentValues values = new ContentValues();
         values.put(TripContract.TripColumns.PLACE_ID, mPlaceId);

@@ -5,8 +5,8 @@
     <color name="primary_light">#FFCCBC</color>
     <color name="accent">#03A9F4</color>
 
-    <color name="scrim_start">#10E64A19</color>
-    <color name="scrim_end">#DDE64A19</color>
+    <color name="scrim_start">#00000000</color>
+    <color name="scrim_end">#DD000000</color>
 
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
