@@ -98,14 +98,8 @@ public class TripActivity extends AppCompatActivity
     }
 
     private void placePhotosTask() {
-        new PhotoTask(getApplicationContext(), mGoogleApiClient, mTrip.getPlaceId(),
-                mImageView.getWidth(), mImageView.getHeight()) {
-            @Override
-            protected void onPreExecute() {
-                // Display a temporary image to show while bitmap is loading.
-                mImageView.setImageResource(R.drawable.test_image);
-            }
-
+        int size = (int) getResources().getDimension(R.dimen.full_image);
+        new PhotoTask(getApplicationContext(), mGoogleApiClient, mTrip.getPlaceId(), size, size) {
             @Override
             protected void onPostExecute(Bitmap photo) {
                 if (photo != null) {

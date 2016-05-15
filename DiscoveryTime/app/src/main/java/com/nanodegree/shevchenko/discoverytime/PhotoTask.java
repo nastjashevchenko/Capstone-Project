@@ -46,9 +46,8 @@ public class PhotoTask extends AsyncTask<Double, Void, Bitmap> {
 
     private void saveImage(Bitmap image, File file) {
         if (image == null) return;
-        FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(file);
+            FileOutputStream fos = new FileOutputStream(file);
             image.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
         } catch (IOException e) {
