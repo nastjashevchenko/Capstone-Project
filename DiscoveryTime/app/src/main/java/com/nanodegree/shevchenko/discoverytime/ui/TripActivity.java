@@ -66,9 +66,9 @@ public class TripActivity extends AppCompatActivity implements
     @BindView(R.id.trip_image) ImageView mImageView;
     @BindView(R.id.empty) TextView mEmptyListView;
 
-    // TODO Need to update place list on resume when place was changed from map activity
     private void updatePlaceList(Cursor cursor) {
-        mEmptyListView.setVisibility(cursor != null ? View.GONE : View.VISIBLE);
+        mEmptyListView.setVisibility((cursor != null && cursor.getCount() > 0) ?
+                View.GONE : View.VISIBLE);
         mAdapter.setUpdatedList(cursor);
         mAdapter.notifyDataSetChanged();
     }
