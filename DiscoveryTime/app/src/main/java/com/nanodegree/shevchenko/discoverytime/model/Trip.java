@@ -25,7 +25,7 @@ public class Trip implements Parcelable {
 
     public Trip() {
         super();
-    };
+    }
 
     public Trip(Cursor cursor) {
         id = cursor.getLong(cursor.getColumnIndex(TripContract.TripColumns._ID));

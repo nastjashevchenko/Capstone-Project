@@ -11,7 +11,7 @@
 
     <EditText
         android:id="@+id/note"
-        android:hint="Add note"
+        android:hint="@string/add_note_hint"
         android:layout_margin="16dp"
         android:maxLength="50"
         android:layout_width="match_parent"

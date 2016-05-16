@@ -9,12 +9,8 @@
     <color name="scrim_end">#DD000000</color>
 
     <color name="primary_text">#212121</color>
-    <color name="secondary_text">#727272</color>
     <color name="divider">#B6B6B6</color>
     <color name="text_light">#FFFFFF</color>
-    <color name="text_subheader">#8FFF</color>
-
-    <color name="ripple">#FFFFFF</color>
     <color name="photo_placeholder">#ccc</color>
 
     <color name="white">#FFFFFF</color>

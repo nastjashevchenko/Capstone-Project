@@ -30,28 +30,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        /* GoogleApiClient mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .enableAutoManage(this, this)
-                .build();
-
-        Test sample to test Google Places API connection
-        String placeId = "ChIJ-6BSGSeG3EMRllG2gblbMBU";
-        Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId)
-                .setResultCallback(new ResultCallback<PlaceBuffer>() {
-                    @Override
-                    public void onResult(PlaceBuffer places) {
-                        if (places.getStatus().isSuccess() && places.getCount() > 0) {
-                            final Place myPlace = places.get(0);
-                            Log.i(LOG_TAG, "Place found: " + myPlace.getName());
-                        } else {
-                            Log.e(LOG_TAG, "Place not found");
-                        }
-                        places.release();
-                    }
-                }); */
-
         mViewPager.setAdapter(new TripListPagerAdapter(getSupportFragmentManager(),
                 MainActivity.this));
         mTabLayout.setupWithViewPager(mViewPager);
