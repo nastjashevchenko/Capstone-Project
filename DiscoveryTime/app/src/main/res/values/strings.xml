@@ -39,4 +39,5 @@
     <string name="from_to_tmpl" formatted="false">%s - %s</string>
     <string name="no_trips">Let\'s start discover!</string>
     <string name="no_places">Let\'s add places to your trip!</string>
+    <string name="logo_description">Discovery Time!</string>
 </resources>
