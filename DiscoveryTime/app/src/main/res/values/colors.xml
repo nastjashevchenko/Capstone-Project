@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#FF5722</color>
-    <color name="primary_dark">#E64A19</color>
-    <color name="primary_light">#FFCCBC</color>
-    <color name="accent">#03A9F4</color>
+    <color name="primary">#9C27B0</color>
+    <color name="primary_dark">#8E24AA</color>
+    <color name="primary_light">#E1BEE7</color>
+    <color name="accent">#69F0AE</color>
 
     <color name="scrim_start">#00000000</color>
     <color name="scrim_end">#DD000000</color>
