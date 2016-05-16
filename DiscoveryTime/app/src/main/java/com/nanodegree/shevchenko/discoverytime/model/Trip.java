@@ -10,8 +10,6 @@ import android.os.Parcelable;
 import com.nanodegree.shevchenko.discoverytime.Util;
 import com.nanodegree.shevchenko.discoverytime.data.TripContract;
 
-import java.util.ArrayList;
-
 public class Trip implements Parcelable {
     public static final String EXTRA_NAME = "TRIP";
     public static final String START_DATE = "START_DATE";
@@ -137,23 +135,18 @@ public class Trip implements Parcelable {
                 new String[]{id.toString()});
     }
 
-    public ArrayList<TripPlace> getPlaces(ContentResolver resolver) {
-        // TODO make places load to trip activity with cursor loader
-        ArrayList<TripPlace> places = new ArrayList<>();
-        Cursor c = resolver.query(
+    /** If duration became shorter, some places could have days out of new range
+     ** This places will be not assigned to any day in this case
+     **/
+    public void updatePlacesDays(ContentResolver resolver, Long daysCount) {
+        ContentValues values = new ContentValues();
+        values.put(TripContract.TripPlaceColumns.DAY, 0);
+        resolver.update(
                 TripContract.TripPlaceColumns.CONTENT_URI,
-                null,
-                TripContract.TripPlaceColumns.TRIP_ID  + " = ?",
-                new String[]{id.toString()},
-                TripContract.TripPlaceColumns.DAY + " ASC"
-        );
-        if (c != null) {
-            while (c.moveToNext()) {
-                places.add(new TripPlace(c));
-            }
-            c.close();
-        }
-        return places;
+                values,
+                TripContract.TripPlaceColumns.TRIP_ID + " = ? AND "
+                + TripContract.TripPlaceColumns.DAY + " > ?",
+                new String[]{id.toString(), daysCount.toString()});
     }
 
     // ---- Parcelable methods ----

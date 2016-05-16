@@ -23,7 +23,6 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.nanodegree.shevchenko.discoverytime.R;
 import com.nanodegree.shevchenko.discoverytime.Util;
 import com.nanodegree.shevchenko.discoverytime.model.Trip;
-import com.nanodegree.shevchenko.discoverytime.model.TripPlace;
 
 import java.util.Calendar;
 
@@ -194,12 +193,7 @@ public class EditTripDialog  extends DialogFragment
             long newDuration = (endDate - startDate) / (24 * 60 * 60 * 1000) + 1;
             // If duration became shorter, some places could have days out of new range
             // This places will be not assigned to any day in this case
-            for (TripPlace tripPlace : mTrip.getPlaces(getContext().getContentResolver())) {
-                if (tripPlace.getDay() > newDuration) {
-                    tripPlace.setDay(0);
-                    tripPlace.save(getContext().getContentResolver());
-                }
-            }
+            mTrip.updatePlacesDays(getContext().getContentResolver(), newDuration);
             mListener.onDatesChanged(EditTripDialog.this);
         }
         return true;

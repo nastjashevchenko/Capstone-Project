@@ -5,9 +5,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.nanodegree.shevchenko.discoverytime.data.TripContract;
+
+import java.util.ArrayList;
 
 /**
  * This class holds places user want to visit during the trip.
@@ -43,7 +44,6 @@ public class TripPlace implements Parcelable {
         id = cursor.getLong(cursor.getColumnIndex(TripContract.TripPlaceColumns._ID));
         mPlaceId = cursor.getString(cursor.getColumnIndex(TripContract.TripPlaceColumns.PLACE_ID));
         mTripId = cursor.getLong(cursor.getColumnIndex(TripContract.TripPlaceColumns.TRIP_ID));
-        Log.d("IF TRIP ID CHANGES", mTripId.toString());
         mName = cursor.getString(cursor.getColumnIndex(TripContract.TripPlaceColumns.NAME));
         mNote = cursor.getString(cursor.getColumnIndex(TripContract.TripPlaceColumns.NOTE));
         mDay = cursor.getInt(cursor.getColumnIndex(TripContract.TripPlaceColumns.DAY));
@@ -51,21 +51,13 @@ public class TripPlace implements Parcelable {
         mLng = cursor.getDouble(cursor.getColumnIndex(TripContract.TripPlaceColumns.LNG));
     }
 
-    public static TripPlace getById(Long id, ContentResolver resolver) {
-        TripPlace place = null;
-        Cursor c = resolver.query(
-                TripContract.TripPlaceColumns.CONTENT_URI,
-                null,
-                TripContract.TripPlaceColumns._ID  + " = ?",
-                new String[]{id.toString()},
-                null
-        );
-        if (c != null) {
-            c.moveToNext();
-            place = new TripPlace(c);
-            c.close();
-        }
-        return place;
+    public static ArrayList<TripPlace> createListFromCursor(Cursor cursor) {
+        ArrayList<TripPlace> places = new ArrayList<>();
+        cursor.moveToFirst();
+        do {
+            places.add(new TripPlace(cursor));
+        } while (cursor.moveToNext());
+        return places;
     }
 
     private ContentValues putPlaceToValues() {

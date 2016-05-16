@@ -1,12 +1,16 @@
 package com.nanodegree.shevchenko.discoverytime.ui;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +34,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.nanodegree.shevchenko.discoverytime.PhotoTask;
 import com.nanodegree.shevchenko.discoverytime.R;
 import com.nanodegree.shevchenko.discoverytime.adapters.PlaceAdapter;
+import com.nanodegree.shevchenko.discoverytime.data.TripContract;
 import com.nanodegree.shevchenko.discoverytime.model.Trip;
 import com.nanodegree.shevchenko.discoverytime.model.TripPlace;
 
@@ -38,15 +43,19 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TripActivity extends AppCompatActivity
-        implements PlaceAdapter.OnRecyclerItemClickListener, EditPlaceDialog.EditPlaceDialogListener,
-                   EditTripDialog.EditTripDialogListener, GoogleApiClient.OnConnectionFailedListener {
+public class TripActivity extends AppCompatActivity implements
+        PlaceAdapter.OnRecyclerItemClickListener,
+        EditTripDialog.EditTripDialogListener,
+        GoogleApiClient.OnConnectionFailedListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private Trip mTrip;
-    private ArrayList<TripPlace> mTripPlaces;
+    private Cursor mPlacesCursor = null;
     private PlaceAdapter mAdapter;
 
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 100;
+    private static final int URL_LOADER = 1;
+
     private static final String LOG_TAG = TripActivity.class.getName();
     GoogleApiClient mGoogleApiClient;
 
@@ -58,10 +67,9 @@ public class TripActivity extends AppCompatActivity
     @BindView(R.id.empty) TextView mEmptyListView;
 
     // TODO Need to update place list on resume when place was changed from map activity
-    private void updatePlaceList() {
-        mTripPlaces = mTrip.getPlaces(getContentResolver());
-        mEmptyListView.setVisibility(mTripPlaces.size() > 0 ? View.GONE : View.VISIBLE);
-        mAdapter.setUpdatedList(mTripPlaces);
+    private void updatePlaceList(Cursor cursor) {
+        mEmptyListView.setVisibility(cursor != null ? View.GONE : View.VISIBLE);
+        mAdapter.setUpdatedList(cursor);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -86,14 +94,12 @@ public class TripActivity extends AppCompatActivity
         mCollapsingToolbar.setExpandedTitleGravity(Gravity.BOTTOM | Gravity.CENTER);
         mDatesView.setText(mTrip.getDates(getResources().getString(R.string.from_to_tmpl)));
 
-        // TODO Use cursor adapter
-        mTripPlaces = mTrip.getPlaces(getContentResolver());
-        mEmptyListView.setVisibility(mTripPlaces.size() > 0 ? View.GONE : View.VISIBLE);
         mPlaceListView.setHasFixedSize(true);
         mPlaceListView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new PlaceAdapter(this, mTripPlaces, mTrip.getStartDate());
+        mAdapter = new PlaceAdapter(this, mPlacesCursor, mTrip.getStartDate());
         mPlaceListView.setAdapter(mAdapter);
 
+        getSupportLoaderManager().initLoader(URL_LOADER, null, this);
         placePhotosTask();
     }
 
@@ -120,9 +126,10 @@ public class TripActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         // TODO if mTripPlaces list is empty - hide this button
-        if (id == R.id.action_show_on_map && (mTripPlaces != null && mTripPlaces.size() > 0)) {
+        if (id == R.id.action_show_on_map && mPlacesCursor != null && mPlacesCursor.getCount() > 0) {
             Intent mapActivity = new Intent(this, MapActivity.class);
-            mapActivity.putParcelableArrayListExtra(TripPlace.PLACES_LIST, mTripPlaces);
+            ArrayList<TripPlace> places = TripPlace.createListFromCursor(mPlacesCursor);
+            mapActivity.putParcelableArrayListExtra(TripPlace.PLACES_LIST, places);
             mapActivity.putExtra(Trip.START_DATE, mTrip.getStartDate());
             mapActivity.putExtra(Trip.END_DATE, mTrip.getEndDate());
             startActivity(mapActivity);
@@ -164,7 +171,6 @@ public class TripActivity extends AppCompatActivity
                 tripPlace.setLat(place.getLatLng().latitude);
                 tripPlace.setLng(place.getLatLng().longitude);
                 tripPlace.save(getContentResolver());
-                updatePlaceList();
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 Log.i(LOG_TAG, status.getStatusMessage());
@@ -187,7 +193,6 @@ public class TripActivity extends AppCompatActivity
     @Override
     public void onDatesChanged(DialogFragment dialog) {
         mDatesView.setText(mTrip.getDates(getResources().getString(R.string.from_to_tmpl)));
-        updatePlaceList();
     }
 
     @Override
@@ -195,8 +200,35 @@ public class TripActivity extends AppCompatActivity
 
     }
 
+    // -- Cursor Loader Callback methods
+
     @Override
-    public void onSaveClick(DialogFragment dialog, TripPlace place) {
-        updatePlaceList();
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case URL_LOADER:
+                return new CursorLoader(
+                        this,
+                        TripContract.TripPlaceColumns.CONTENT_URI,
+                        null,
+                        TripContract.TripPlaceColumns.TRIP_ID + " = ?",
+                        new String[]{mTrip.getId().toString()},
+                        TripContract.TripPlaceColumns.DAY + " ASC"
+                );
+            default:
+                // An invalid id was passed in
+                return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mPlacesCursor = data;
+        updatePlaceList(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mPlacesCursor = null;
+        updatePlaceList(null);
     }
 }

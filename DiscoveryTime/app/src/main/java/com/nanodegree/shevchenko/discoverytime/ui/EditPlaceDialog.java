@@ -41,8 +41,7 @@ public class EditPlaceDialog extends DialogFragment {
         try {
             mListener = (EditPlaceDialogListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement EditPlaceDialogListener");
+            mListener = null;
         }
     }
 
@@ -82,7 +81,7 @@ public class EditPlaceDialog extends DialogFragment {
                                     tripPlace.setDay(spinner.getSelectedItemPosition());
                                     tripPlace.setNote(note.getText().toString());
                                     tripPlace.save(getContext().getContentResolver());
-                                    mListener.onSaveClick(EditPlaceDialog.this, tripPlace);
+                                    if (mListener != null) mListener.onSaveClick(EditPlaceDialog.this, tripPlace);
                                 }
                             }
                         })

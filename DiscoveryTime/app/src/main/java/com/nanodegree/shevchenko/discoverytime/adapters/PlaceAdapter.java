@@ -1,6 +1,7 @@
 package com.nanodegree.shevchenko.discoverytime.adapters;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,19 +51,20 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         }
     }
 
-    public PlaceAdapter(Context context, List<TripPlace> tripPlaceList, long startDate) {
+    public PlaceAdapter(Context context, Cursor tripCursor, long startDate) {
         mContext = context;
         mListener = (OnRecyclerItemClickListener) context;
         mStartDate = startDate;
-        setUpdatedList(tripPlaceList);
+        setUpdatedList(tripCursor);
     }
 
-    public void setUpdatedList(List<TripPlace> tripPlaceList) {
+    public void setUpdatedList(Cursor tripCursor) {
         mItemList = new ArrayList<>();
         // Need to build list of recyclerview items, need to insert headers to list of places
         int lastDayNumber = -1;
-        for (int i = 0; i < tripPlaceList.size(); i++) {
-            TripPlace tripPlace = tripPlaceList.get(i);
+        if (tripCursor == null) return;
+        while (tripCursor.moveToNext()) {
+            TripPlace tripPlace = new TripPlace(tripCursor);
             int day = tripPlace.getDay();
             if (day != lastDayNumber) {
                 // Insert new header view and update section data.

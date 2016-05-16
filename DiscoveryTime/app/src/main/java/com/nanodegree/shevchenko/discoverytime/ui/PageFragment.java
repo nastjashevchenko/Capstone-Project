@@ -22,7 +22,8 @@ import com.nanodegree.shevchenko.discoverytime.model.Trip;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PageFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class PageFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String ARG_PAGE = "ARG_PAGE";
     private static final int URL_LOADER = 0;
 
