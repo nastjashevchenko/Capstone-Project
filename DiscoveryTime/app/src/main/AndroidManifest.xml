@@ -36,7 +36,26 @@
 
         <provider
             android:authorities="com.nanodegree.shevchenko.discoverytime.provider"
-            android:name=".data.TripProvider" />
+            android:name=".data.TripProvider"
+            android:exported="true"/>
+
+        <!-- Widget Receiver -->
+        <receiver android:name=".widget.CollectionWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.color.appwidget.list.UPDATE_LIST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/collection_widget" />
+        </receiver>
+
+        <!-- Widget service -->
+        <service
+            android:name=".widget.CollectionWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>
