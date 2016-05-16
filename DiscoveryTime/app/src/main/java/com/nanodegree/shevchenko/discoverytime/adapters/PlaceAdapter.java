@@ -1,12 +1,15 @@
 package com.nanodegree.shevchenko.discoverytime.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nanodegree.shevchenko.discoverytime.R;
 import com.nanodegree.shevchenko.discoverytime.Util;
@@ -28,7 +31,8 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         void onRecyclerItemClick(TripPlace place);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener {
         // For header title is day number or "Not planned yet" text, note is date (can be empty)
         // For place item title is place name, note is note added bu user (can be empty)
         TextView title;
@@ -40,6 +44,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
             title = (TextView) placeItemView.findViewById(R.id.title);
             note = (TextView) placeItemView.findViewById(R.id.note);
             placeItemView.setOnClickListener(this);
+            placeItemView.setOnLongClickListener(this);
             mListener = listener;
         }
 
@@ -48,6 +53,30 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
             ListItem item = mItemList.get(getLayoutPosition());
             if (item.isHeader) return;
             mListener.onRecyclerItemClick(item.place);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            final ListItem item = mItemList.get(getLayoutPosition());
+            if (item.isHeader) return true;
+            final String placeName = item.place.getName();
+            AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+            alert.setMessage(mContext.getString(R.string.place_delete_confirm, placeName))
+                    .setTitle(placeName)
+                    .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            item.place.delete(mContext.getContentResolver());
+                            Toast.makeText(mContext,
+                                    mContext.getString(R.string.place_deleted, placeName),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+            alert.create().show();
+            return true;
         }
     }
 
