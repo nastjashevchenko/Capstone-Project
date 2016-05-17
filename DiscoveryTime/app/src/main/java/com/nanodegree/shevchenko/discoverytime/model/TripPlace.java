@@ -53,6 +53,7 @@ public class TripPlace implements Parcelable {
 
     public static ArrayList<TripPlace> createListFromCursor(Cursor cursor) {
         ArrayList<TripPlace> places = new ArrayList<>();
+        if (cursor == null || cursor.getCount() <= 0) return places;
         cursor.moveToFirst();
         do {
             places.add(new TripPlace(cursor));
@@ -179,4 +180,10 @@ public class TripPlace implements Parcelable {
             return new TripPlace[size];
         }
     };
+
+    public void insertWithTripId(Long tripId, ContentResolver resolver) {
+        mTripId = tripId;
+        resolver.insert(TripContract.TripPlaceColumns.CONTENT_URI,
+                putPlaceToValues());
+    }
 }

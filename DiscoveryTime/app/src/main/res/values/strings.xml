@@ -34,6 +34,11 @@
     <string name="place_delete_confirm">Remove %s from the trip?</string>
     <string name="place_deleted">%s was deleted</string>
 
+    <!-- Snackbars to undo trip deletion -->
+    <string name="trip_deleted">Trip \"%s\" was deleted</string>
+    <string name="undo">UNDO</string>
+    <string name="trip_restored">Trip \"%s\" restored</string>
+
     <string name="title_activity_map">MapActivity</string>
     <string name="day_and_date_tmpl" formatted="false">Day %d - %s</string>
     <string name="from_to_tmpl" formatted="false">%s - %s</string>

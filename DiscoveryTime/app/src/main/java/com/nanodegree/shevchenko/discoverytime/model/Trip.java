@@ -4,11 +4,14 @@ package com.nanodegree.shevchenko.discoverytime.model;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.nanodegree.shevchenko.discoverytime.Util;
 import com.nanodegree.shevchenko.discoverytime.data.TripContract;
+
+import java.util.List;
 
 public class Trip implements Parcelable {
     public static final String EXTRA_NAME = "TRIP";
@@ -126,6 +129,16 @@ public class Trip implements Parcelable {
         } else {
             resolver.insert(TripContract.TripColumns.CONTENT_URI,
                     putTripToValues());
+        }
+    }
+
+    public void insertWithPlaces(ContentResolver resolver, List<TripPlace> places) {
+        Uri uri = resolver.insert(TripContract.TripColumns.CONTENT_URI,
+                putTripToValues());
+        if (uri != null) {
+            for (TripPlace place : places) {
+                place.insertWithTripId(Long.valueOf(uri.getLastPathSegment()), resolver);
+            }
         }
     }
 

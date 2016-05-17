@@ -11,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -142,7 +143,11 @@ public class TripActivity extends AppCompatActivity implements
                 dialog.show(getSupportFragmentManager(), "EditTripDialog");
                 break;
             case R.id.action_delete:
-                // TODO add UNDO snackbar
+                Intent messageIntent = new Intent(MainActivity.DELETE_EVENT);
+                messageIntent.putExtra(Trip.EXTRA_NAME, mTrip);
+                messageIntent.putParcelableArrayListExtra(TripPlace.PLACES_LIST,
+                        TripPlace.createListFromCursor(mPlacesCursor));
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);
                 mTrip.delete(getContentResolver());
                 finish();
                 break;
