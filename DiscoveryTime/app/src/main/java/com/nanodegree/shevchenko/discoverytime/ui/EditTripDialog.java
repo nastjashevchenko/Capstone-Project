@@ -75,7 +75,7 @@ public class EditTripDialog  extends DialogFragment
         View dialogView = inflater.inflate(R.layout.dialog_trip_edit, null);
 
         builder.setView(dialogView);
-        builder.setTitle(newTrip ? "Add new trip" : mTrip.getTitle());
+        builder.setTitle(newTrip ? getString(R.string.new_trip_header) : mTrip.getTitle());
 
         mTitle = (EditText) dialogView.findViewById(R.id.destination);
         mStartDate = (EditText) dialogView.findViewById(R.id.start_date);
@@ -133,6 +133,8 @@ public class EditTripDialog  extends DialogFragment
     public void showDatePickerDialog(View view) {
         start = (view.getId() == R.id.start_date);
         final Calendar c = Calendar.getInstance();
+        if (start && startDate != 0L) c.setTimeInMillis(startDate);
+        if (!start && endDate != 0L) c.setTimeInMillis(endDate);
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
