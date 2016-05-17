@@ -34,8 +34,8 @@ public class MapActivity extends AppCompatActivity implements
     private long startDate;
     private long endDate;
 
-    private static final float[] MARKER_COLORS = new float[] {0.0F, 30.0F,
-            60.0F, 120.0F, 180.0F, 210.0F, 240.0F, 270.0F, 300.0F, 330.0F};
+    private static final float[] MARKER_COLORS = new float[] {330.0F, 0.0F, 30.0F,
+            60.0F, 90.0F, 120.0F, 150.0F, 180.0F, 210.0F, 240.0F, 270.0F, 300.0F};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +106,8 @@ public class MapActivity extends AppCompatActivity implements
         if (day == 0) {
             return BitmapDescriptorFactory.fromResource(R.drawable.grey_marker);
         } else {
-            // There are 10 pre defined colors, if number of days is greater - just start over
-            // TODO add more colors
-            return BitmapDescriptorFactory.defaultMarker(MARKER_COLORS[day % 10]);
+            // There are 12 pre defined colors, if number of days is greater - just start over
+            return BitmapDescriptorFactory.defaultMarker(MARKER_COLORS[day % 12]);
         }
     }
 
