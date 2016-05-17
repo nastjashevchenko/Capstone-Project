@@ -31,7 +31,7 @@
     <string name="delete_trip">Delete trip</string>
     <string name="not_planned_header">Not planned yet</string>
     <string name="day_number">Day %d</string>
-    <string name="place_delete_confirm">Are you sure you want to remove %s from the trip?</string>
+    <string name="place_delete_confirm">Remove %s from the trip?</string>
     <string name="place_deleted">%s was deleted</string>
 
     <string name="title_activity_map">MapActivity</string>
