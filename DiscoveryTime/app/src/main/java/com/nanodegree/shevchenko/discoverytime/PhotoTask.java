@@ -73,7 +73,6 @@ public class PhotoTask extends AsyncTask<Double, Void, Bitmap> {
             return null;
         }
         Bitmap image = null;
-        // TODO Think of image sizes (OOM)
         // Check if file exists locally and use it
         // If not - download from web and save for future use
         File file  = new File (mContext.getFilesDir(), mPlaceId);

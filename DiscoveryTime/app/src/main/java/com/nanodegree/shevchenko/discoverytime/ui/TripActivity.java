@@ -52,6 +52,7 @@ public class TripActivity extends AppCompatActivity implements
     private Trip mTrip;
     private Cursor mPlacesCursor = null;
     private PlaceAdapter mAdapter;
+    private MenuItem mMapMenuItem;
 
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 100;
     private static final int URL_LOADER = 1;
@@ -119,32 +120,34 @@ public class TripActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.trip_menu, menu);
+        mMapMenuItem = menu.findItem(R.id.action_show_on_map);
+        mMapMenuItem.setVisible(mPlacesCursor!=null && mPlacesCursor.getCount() > 0);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        // TODO if mTripPlaces list is empty - hide this button
-        if (id == R.id.action_show_on_map && mPlacesCursor != null && mPlacesCursor.getCount() > 0) {
-            Intent mapActivity = new Intent(this, MapActivity.class);
-            ArrayList<TripPlace> places = TripPlace.createListFromCursor(mPlacesCursor);
-            mapActivity.putParcelableArrayListExtra(TripPlace.PLACES_LIST, places);
-            mapActivity.putExtra(Trip.START_DATE, mTrip.getStartDate());
-            mapActivity.putExtra(Trip.END_DATE, mTrip.getEndDate());
-            startActivity(mapActivity);
-            return true;
-        }
-        if (id == R.id.action_edit) {
-            DialogFragment dialog = EditTripDialog.newInstance(mTrip);
-            dialog.show(getSupportFragmentManager(), "EditTripDialog");
-            return true;
-        }
-        if (id == R.id.action_delete) {
-            // TODO add UNDO snackbar
-            mTrip.delete(getContentResolver());
-            finish();
-            return true;
+        switch(id) {
+            case R.id.action_show_on_map:
+                Intent mapActivity = new Intent(this, MapActivity.class);
+                ArrayList<TripPlace> places = TripPlace.createListFromCursor(mPlacesCursor);
+                mapActivity.putParcelableArrayListExtra(TripPlace.PLACES_LIST, places);
+                mapActivity.putExtra(Trip.START_DATE, mTrip.getStartDate());
+                mapActivity.putExtra(Trip.END_DATE, mTrip.getEndDate());
+                startActivity(mapActivity);
+                break;
+            case R.id.action_edit:
+                DialogFragment dialog = EditTripDialog.newInstance(mTrip);
+                dialog.show(getSupportFragmentManager(), "EditTripDialog");
+                break;
+            case R.id.action_delete:
+                // TODO add UNDO snackbar
+                mTrip.delete(getContentResolver());
+                finish();
+                break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -224,6 +227,8 @@ public class TripActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mPlacesCursor = data;
         updatePlaceList(data);
+        if (mMapMenuItem != null) mMapMenuItem.setVisible(data != null && data.getCount() > 0);
+        invalidateOptionsMenu();
     }
 
     @Override
