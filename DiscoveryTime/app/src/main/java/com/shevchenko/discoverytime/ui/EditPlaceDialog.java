@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.ui;
+package com.shevchenko.discoverytime.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -13,10 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.Util;
-import com.nanodegree.shevchenko.discoverytime.model.Trip;
-import com.nanodegree.shevchenko.discoverytime.model.TripPlace;
+import com.shevchenko.discoverytime.R;
+import com.shevchenko.discoverytime.Util;
+import com.shevchenko.discoverytime.model.Trip;
+import com.shevchenko.discoverytime.model.TripPlace;
 
 public class EditPlaceDialog extends DialogFragment {
     EditPlaceDialogListener mListener;

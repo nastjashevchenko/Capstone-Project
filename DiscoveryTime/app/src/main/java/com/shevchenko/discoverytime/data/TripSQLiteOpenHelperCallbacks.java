@@ -1,11 +1,11 @@
-package com.nanodegree.shevchenko.discoverytime.data;
+package com.shevchenko.discoverytime.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import android.util.Log;
 
-import com.nanodegree.shevchenko.discoverytime.BuildConfig;
+import com.shevchenko.discoverytime.BuildConfig;
 
 /**
  * Implement your custom database creation or upgrade code here.

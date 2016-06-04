@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime;
+package com.shevchenko.discoverytime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

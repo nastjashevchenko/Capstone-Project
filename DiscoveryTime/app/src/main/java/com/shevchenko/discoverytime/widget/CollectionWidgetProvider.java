@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.widget;
+package com.shevchenko.discoverytime.widget;
 
 
 import android.app.PendingIntent;
@@ -8,8 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.ui.TripActivity;
+import com.shevchenko.discoverytime.R;
+import com.shevchenko.discoverytime.ui.TripActivity;
 
 public class CollectionWidgetProvider extends AppWidgetProvider {
 

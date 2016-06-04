@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.ui;
+package com.shevchenko.discoverytime.ui;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,10 +19,10 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.adapters.TripListPagerAdapter;
-import com.nanodegree.shevchenko.discoverytime.model.Trip;
-import com.nanodegree.shevchenko.discoverytime.model.TripPlace;
+import com.shevchenko.discoverytime.R;
+import com.shevchenko.discoverytime.adapters.TripListPagerAdapter;
+import com.shevchenko.discoverytime.model.Trip;
+import com.shevchenko.discoverytime.model.TripPlace;
 
 import java.util.ArrayList;
 

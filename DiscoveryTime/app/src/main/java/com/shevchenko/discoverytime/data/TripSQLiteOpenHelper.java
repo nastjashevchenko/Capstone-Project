@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.data;
+package com.shevchenko.discoverytime.data;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
 
-import com.nanodegree.shevchenko.discoverytime.BuildConfig;
+import com.shevchenko.discoverytime.BuildConfig;
 
 public class TripSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = TripSQLiteOpenHelper.class.getSimpleName();

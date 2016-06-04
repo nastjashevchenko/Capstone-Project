@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.widget;
+package com.shevchenko.discoverytime.widget;
 
 
 import android.content.Context;
@@ -7,9 +7,9 @@ import android.database.Cursor;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.data.TripContract;
-import com.nanodegree.shevchenko.discoverytime.model.Trip;
+import com.shevchenko.discoverytime.R;
+import com.shevchenko.discoverytime.data.TripContract;
+import com.shevchenko.discoverytime.model.Trip;
 
 public class CollectionWidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
     Context mContext;

@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.data;
+package com.shevchenko.discoverytime.data;
 
 import android.net.Uri;
 import android.provider.BaseColumns;

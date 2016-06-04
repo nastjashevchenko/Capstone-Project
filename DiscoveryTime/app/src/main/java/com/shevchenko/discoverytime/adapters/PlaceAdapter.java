@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.adapters;
+package com.shevchenko.discoverytime.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.Util;
-import com.nanodegree.shevchenko.discoverytime.model.TripPlace;
+import com.shevchenko.discoverytime.R;
+import com.shevchenko.discoverytime.Util;
+import com.shevchenko.discoverytime.model.TripPlace;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.ui;
+package com.shevchenko.discoverytime.ui;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -20,9 +20,9 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.Util;
-import com.nanodegree.shevchenko.discoverytime.model.Trip;
+import com.shevchenko.discoverytime.R;
+import com.shevchenko.discoverytime.Util;
+import com.shevchenko.discoverytime.model.Trip;
 
 import java.util.Calendar;
 

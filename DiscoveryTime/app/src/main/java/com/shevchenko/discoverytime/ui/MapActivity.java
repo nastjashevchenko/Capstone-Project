@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.ui;
+package com.shevchenko.discoverytime.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -15,10 +15,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.Util;
-import com.nanodegree.shevchenko.discoverytime.model.Trip;
-import com.nanodegree.shevchenko.discoverytime.model.TripPlace;
+import com.shevchenko.discoverytime.R;
+import com.shevchenko.discoverytime.Util;
+import com.shevchenko.discoverytime.model.Trip;
+import com.shevchenko.discoverytime.model.TripPlace;
 
 import java.util.HashMap;
 import java.util.List;

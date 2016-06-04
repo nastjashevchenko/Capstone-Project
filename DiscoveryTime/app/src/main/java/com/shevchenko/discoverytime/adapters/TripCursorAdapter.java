@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.adapters;
+package com.shevchenko.discoverytime.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.model.Trip;
+import com.shevchenko.discoverytime.R;
+import com.shevchenko.discoverytime.model.Trip;
 
 
 public class TripCursorAdapter extends CursorAdapter {

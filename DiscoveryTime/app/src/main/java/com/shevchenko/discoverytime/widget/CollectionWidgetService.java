@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.widget;
+package com.shevchenko.discoverytime.widget;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;

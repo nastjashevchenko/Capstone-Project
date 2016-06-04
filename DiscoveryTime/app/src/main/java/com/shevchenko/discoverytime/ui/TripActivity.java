@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.ui;
+package com.shevchenko.discoverytime.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -32,12 +32,12 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.nanodegree.shevchenko.discoverytime.PhotoTask;
-import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.adapters.PlaceAdapter;
-import com.nanodegree.shevchenko.discoverytime.data.TripContract;
-import com.nanodegree.shevchenko.discoverytime.model.Trip;
-import com.nanodegree.shevchenko.discoverytime.model.TripPlace;
+import com.shevchenko.discoverytime.PhotoTask;
+import com.shevchenko.discoverytime.R;
+import com.shevchenko.discoverytime.adapters.PlaceAdapter;
+import com.shevchenko.discoverytime.data.TripContract;
+import com.shevchenko.discoverytime.model.Trip;
+import com.shevchenko.discoverytime.model.TripPlace;
 
 import java.util.ArrayList;
 

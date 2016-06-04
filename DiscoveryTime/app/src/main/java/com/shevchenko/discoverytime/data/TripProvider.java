@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.data;
+package com.shevchenko.discoverytime.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -13,7 +13,7 @@ public class TripProvider  extends ContentProvider {
     private static final String TYPE_CURSOR_ITEM = "vnd.android.cursor.item/";
     private static final String TYPE_CURSOR_DIR = "vnd.android.cursor.dir/";
 
-    public static final String AUTHORITY = "com.nanodegree.shevchenko.discoverytime.provider";
+    public static final String AUTHORITY = "com.shevchenko.discoverytime.provider";
     public static final String CONTENT_URI_BASE = "content://" + AUTHORITY;
 
     private static final int URI_TYPE_TRIP = 0;

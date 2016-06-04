@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.model;
+package com.shevchenko.discoverytime.model;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.nanodegree.shevchenko.discoverytime.data.TripContract;
+import com.shevchenko.discoverytime.data.TripContract;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.nanodegree.shevchenko.discoverytime.ui;
+package com.shevchenko.discoverytime.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,10 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.nanodegree.shevchenko.discoverytime.R;
-import com.nanodegree.shevchenko.discoverytime.adapters.TripCursorAdapter;
-import com.nanodegree.shevchenko.discoverytime.data.TripContract;
-import com.nanodegree.shevchenko.discoverytime.model.Trip;
+import com.shevchenko.discoverytime.R;
+import com.shevchenko.discoverytime.adapters.TripCursorAdapter;
+import com.shevchenko.discoverytime.data.TripContract;
+import com.shevchenko.discoverytime.model.Trip;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nanodegree.shevchenko.discoverytime">
+    package="com.shevchenko.discoverytime">
 
     <application
         android:allowBackup="true"
@@ -31,11 +31,11 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nanodegree.shevchenko.discoverytime.ui.TripActivity" />
+                android:value=".ui.TripActivity" />
         </activity>
 
         <provider
-            android:authorities="com.nanodegree.shevchenko.discoverytime.provider"
+            android:authorities="com.shevchenko.discoverytime.provider"
             android:name=".data.TripProvider"
             android:exported="true"/>
 
