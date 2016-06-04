@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +91,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         mItemList = new ArrayList<>();
         // Need to build list of recyclerview items, need to insert headers to list of places
         int lastDayNumber = -1;
-        if (tripCursor == null) return;
+        if (tripCursor == null || tripCursor.getCount() <= 0) return;
         // In case we already retrieved data and went through cursor, e.g. on device rotation
         tripCursor.moveToFirst();
         do {
